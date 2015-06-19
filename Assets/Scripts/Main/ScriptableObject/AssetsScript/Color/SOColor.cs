@@ -1,27 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ColorType
-{
-	Yellow 	= 0, 
-	Red		= 1, 
-	Green	= 2, 
-	Blue	= 3, 
-	Purple	= 4,
-	Brown 	= 5,
-//	Orange,
-//	Pink,
-
-//	Gold,
-//	Aqua,
-//	Silver,
-//	Magenta,
-
-//	Lime,
-//	Navy,
-//	Maroon,
-//	Olive
-}
 
 public class SOColor : ScriptableObject{
 	public ColorType colorType;

@@ -46,10 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\Property Drawer\CurrencyPropertyDrawer.cs" />
+     <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\Property Drawer\UpgradeDataPropertyDrawer.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\SO Creator\CannedFoodCreator.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\SO Creator\ColorCreator.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\SO Creator\FishCreator.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\SO Creator\SOAssetCreator.cs" />
+     <Compile Include="Assets\Scripts\Main\ScriptableObject\Editor\SO Creator\UpgradableCreator.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.4/UnityEngine.UI.dll</HintPath>
  </Reference>

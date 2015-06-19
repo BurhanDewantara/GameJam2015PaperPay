@@ -2,11 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum CurrencyType
-{
-	Coin,
-	Gem,
-}
 
 [System.Serializable]
 public class Currency

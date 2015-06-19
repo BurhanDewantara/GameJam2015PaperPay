@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CannedFoodMachineController.cs" />
      <Compile Include="Assets\Scripts\Core\Data\DataManager.cs" />
      <Compile Include="Assets\Scripts\Core\Data\ObscuredTest.cs" />
      <Compile Include="Assets\Scripts\Core\Data\ObscuredType\ObscuredBool.cs" />
@@ -63,6 +64,7 @@
      <Compile Include="Assets\Scripts\Core\Utility\HUDFPS.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\CannedFood\CannedFoodItem.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Currency\Currency.cs" />
+     <Compile Include="Assets\Scripts\Main\MonoBehaviour\Helper\EnumClasses.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Magnet.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Manager\BaseManager.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Manager\CurrencyManager.cs" />
@@ -73,8 +75,8 @@
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\PaperController.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\PaperDropPanel.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\PaperGameManager.cs" />
-     <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\CanContentViewer.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\CannedFoodContent.cs" />
+     <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\CannedFoodContentViewer.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\PaperContainer.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\PaperContent.cs" />
      <Compile Include="Assets\Scripts\Main\MonoBehaviour\Viewer\PaperContentViewer.cs" />
@@ -83,6 +85,7 @@
      <Compile Include="Assets\Scripts\Main\ScriptableObject\AssetsScript\CannedFood\StandardCannedFood.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\AssetsScript\Color\SOColor.cs" />
      <Compile Include="Assets\Scripts\Main\ScriptableObject\AssetsScript\FishName\SOFish.cs" />
+     <Compile Include="Assets\Scripts\Main\ScriptableObject\AssetsScript\Upgradable\SOUpgradableData.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.4/UnityEngine.UI.dll</HintPath>
  </Reference>
