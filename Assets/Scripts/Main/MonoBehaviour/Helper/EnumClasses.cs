@@ -31,6 +31,7 @@ public enum UpgradableType
 
 public enum BonusCannedFoodType
 {
+	None = -1,
 	InstantCoin,
 	TimePlus,
 	BonusGem,
@@ -39,6 +40,18 @@ public enum BonusCannedFoodType
 	TimeMinus,
 	BadCan,
 	SwitchPlayMode,
+
+}
+
+public enum LevelMultiplierType
+{
+	Negative1,
+	Positive05,
+	Positive1,
+	Positive2,
+	Positive4,
+	Positive8,
+	InstantBonus,
 }
 
 public enum ColorType

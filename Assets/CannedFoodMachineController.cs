@@ -27,16 +27,18 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
-	public void Create()
+	public void CreateCan(LevelMultiplierType levelMultiplierType)
 	{ 
 		MoveAllCan ();
 
-		GameObject obj = CreateCan (canPrefab);
+		GameObject obj = CreateCanObject (canPrefab);
+		StandardCannedFood CanFood = GetCannedFoodData (levelMultiplierType);
 		obj.GetComponent<RectTransform> ().SetParent (canContainer.GetComponent<RectTransform> (),false);
+		obj.GetComponent<CannedFoodContent> ().SetItem (new CannedFoodItem (CanFood));
 		_cannedFoodObject.Add (obj);
 	}
 
-	GameObject CreateCan(GameObject canPrefab)
+	GameObject CreateCanObject(GameObject canPrefab)
 	{
 		GameObject obj = Instantiate (canPrefab) as GameObject;
 		obj.GetComponent<CannedFoodContentViewer>().OnCanDestroyed += HandleOnCanDestroyed;
@@ -46,7 +48,8 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 	void HandleOnCanClicked (GameObject sender)
 	{
-		// DO SOMETHING!
+		// DO SOMETHING! BONUS CAN!!!!
+		_cannedFoodObject.Remove (sender);
 		Destroy (sender);
 	}
 
@@ -54,6 +57,22 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 	{
 		_cannedFoodObject.Remove (sender);
 		Destroy (sender);
+	}
+
+
+
+
+	
+	
+	private StandardCannedFood GetCannedFoodData(LevelMultiplierType levelMultiplierType)
+	{
+		foreach (StandardCannedFood item in CannedFoodData) {
+			if(item.levelMultiplier == levelMultiplierType)
+			{
+				return item;
+			}
+		}
+		return null;
 	}
 
 }

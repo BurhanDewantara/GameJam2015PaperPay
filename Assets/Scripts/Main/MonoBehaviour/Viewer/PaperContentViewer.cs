@@ -29,11 +29,9 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
-
 		if (!IsAccessible)
 			return;
 		
-
 		if (Mathf.Abs (_deltaMovement.x) > Mathf.Abs (_deltaMovement.y) && _deltaMovement.x > 0) {
 			if (OnDropAtRightPanel != null)
 				OnDropAtRightPanel (this.gameObject);
