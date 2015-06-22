@@ -85,7 +85,7 @@ public class Currency
 	{
 		string str = "";
 		str += this.coin + "C / ";
-		str += this.gem + "G / ";
+		str += this.gem + "G";
 		return str;
 	}
 	

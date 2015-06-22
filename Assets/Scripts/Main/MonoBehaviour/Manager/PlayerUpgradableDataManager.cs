@@ -39,11 +39,23 @@ public class PlayerUpgradableDataManager : Singleton<PlayerUpgradableDataManager
 		}
 	}
 
+	public void Upgrade(UpgradableType key, int up = 1)
+	{
+		if (playerUpgradableData.ContainsKey(key))
+		{	
+			int currentValue =(int) playerUpgradableData[key];
+			currentValue +=up;
+			playerUpgradableData[key] = currentValue;
+		}
+	}
 
 
-	public string ToString()
+	public override string ToString ()
 	{
 		string str = "";
+		foreach (DictionaryEntry upgrade in playerUpgradableData) {
+			str +=  upgrade.Key.ToString() + " " + upgrade.Value.ToString () + "\n" ;
+		}
 		return str;
 	}
 }

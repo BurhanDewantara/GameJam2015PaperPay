@@ -14,11 +14,11 @@ public class CurrencyPropertyDrawer : PropertyDrawer
 		position = EditorGUI.PrefixLabel (position, GUIUtility.GetControlID (FocusType.Passive), label);
 		EditorGUI.indentLevel = 0;
 
-		Rect _1Rect = new Rect (position.x, position.y, 40, position.height);
-		Rect _1Rects = new Rect (position.x+40, position.y, 20, position.height);
+		Rect _1Rect = new Rect (position.x, position.y, 50, position.height);
+		Rect _1Rects = new Rect (position.x+50, position.y, 20, position.height);
 
-		Rect _2Rect = new Rect (position.x+55, position.y, 40, position.height);
-		Rect _2Rects = new Rect (position.x+95, position.y, 20, position.height);
+		Rect _2Rect = new Rect (position.x+65, position.y, 50, position.height);
+		Rect _2Rects = new Rect (position.x+115, position.y, 20, position.height);
 
 //		string emotionName = property.FindPropertyRelative ("emotion").enumDisplayNames[property.FindPropertyRelative ("emotion").enumValueIndex];
 		EditorGUI.PropertyField (_1Rect, property.FindPropertyRelative ("coin"), GUIContent.none);
