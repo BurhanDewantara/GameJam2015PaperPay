@@ -6,6 +6,7 @@ using Artoncode.Core.Data;
 
 public class GameManager : Singleton<GameManager>
 {
+	private const string PLAYER_CURRENCY_KEY = "PLAYER_CURRENCY_KEY";
 	private const string PLAYER_UPGRADABLE_DATA_KEY = "PLAYER_UPGRADABLE_KEY";
 	private const string PLAYER_STATISTIC_KEY = "PLAYER_STATISTIC_KEY";
 
@@ -14,7 +15,20 @@ public class GameManager : Singleton<GameManager>
 		DataManager.defaultManager.load ();
 		SaveLog ("Load", "Load All data");
 	}
-	
+
+
+	public Currency GameCurrency{
+		get {
+			return (Currency)DataManager.defaultManager.getObject (PLAYER_CURRENCY_KEY);
+		}
+		set {
+			DataManager.defaultManager.setObject (PLAYER_CURRENCY_KEY, value);
+			DataManager.defaultManager.save ();
+			SaveLog ("Save", "Game Currency");
+		} 
+
+	}
+
 	public Hashtable GameUpgradableData { 
 		get {
 			return (Hashtable)DataManager.defaultManager.getObject (PLAYER_UPGRADABLE_DATA_KEY);

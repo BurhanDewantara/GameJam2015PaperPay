@@ -2,11 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum CurrencyType
-{
-	Coin,
-	Gem,
-}
 
 [System.Serializable]
 public class Currency
@@ -90,7 +85,7 @@ public class Currency
 	{
 		string str = "";
 		str += this.coin + "C / ";
-		str += this.gem + "G / ";
+		str += this.gem + "G";
 		return str;
 	}
 	

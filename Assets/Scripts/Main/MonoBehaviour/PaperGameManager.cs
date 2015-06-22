@@ -3,44 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using Artoncode.Core;
 
-public enum GamePlayModeType
-{
-	Say_The_Color,
-	Say_The_Text,
-}
 
 public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 {
-
 	public bool isDebug;
-	public List<SOColor> paperInGame;
 	public GamePlayModeType playMode;
+	public List<SOColor> paperInGame;
 	public List<int> comboLimit;
+
+	public float uTime;
+	public float uChanceBonus;
+	public float uChanceGem;
+	public float uExtraTotalBonus;
+	public float uSlideSpeed;
+	public float uMistakeCost;
+
+
 	private int _mistakes = 0;
 	private int _comboCounter = 0;
 	private int _maxComboCounter = 0;
-	private List<int> _cannedFish = new List<int> (4);
+	private List<int> _cannedFish = new List<int> (6);
 
 	void Awake ()
-		{
+	{
 		playMode = GamePlayModeType.Say_The_Color;
-
-		for (int i = 0; i < comboLimit.Count; i++) {
+		for (int i = 0; i < comboLimit.Count; i++) 
 			_cannedFish.Add (0);
-		}
+	
+	
+	
 	}
 
-	void Update ()
-	{
-		UpdateInput ();
-	}
 
-	void UpdateInput ()
-	{
-		if (Input.GetButtonDown ("Jump")) {
-			TriggerPlayMode ();
-		}
-	}
+
+
 
 	void OnGUI ()
 	{
@@ -55,8 +51,17 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 				GUILayout.Label ("Mistakes : " + _mistakes);
 				GUILayout.Label ("Combo : " + _comboCounter);
 				GUILayout.Label ("Max Combo : " + _maxComboCounter);
-
 			GUILayout.EndVertical ();
+
+
+			if(GUI.Button(new Rect(Screen.width -200,0,200,40),"Create"))
+			{
+				CannedFoodMachineController.shared().Create();
+			}
+			if(GUI.Button(new Rect(Screen.width -200,50,200,40),"Change"))
+			{
+				TriggerPlayMode();
+			}
 		}
 	}
 
@@ -70,8 +75,6 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			playMode = GamePlayModeType.Say_The_Color;
 			break;
 		} 
-		Debug.Log (playMode);
-
 	}
 
 	public void DoCorrect ()
