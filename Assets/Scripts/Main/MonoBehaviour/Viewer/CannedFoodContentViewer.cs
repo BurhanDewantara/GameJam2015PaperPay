@@ -8,12 +8,14 @@ public class CannedFoodContentViewer : MonoBehaviour {
 	public event CanContentViewerDelegate OnCanClicked;
 	public event CanContentViewerDelegate OnCanDestroyed;
 
+	public int state;
 	private Animator anim;
 
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
 		this.GetComponent<Button> ().onClick.AddListener (OnClick);
+		state = 1;
 	}
 
 	public void OnClick()
@@ -24,7 +26,9 @@ public class CannedFoodContentViewer : MonoBehaviour {
 
 	public void Slide()
 	{
-		anim.SetTrigger ("Slide");
+		state++;
+		state = Mathf.Clamp (state, 1, 6);
+		anim.SetInteger ("State",state);
 
 	}
 	public void Drop()

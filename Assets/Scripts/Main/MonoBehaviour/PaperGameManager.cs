@@ -3,65 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using Artoncode.Core;
 
-
 public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 {
 	public bool isDebug;
 	public GamePlayModeType playMode;
 	public List<SOColor> paperInGame;
+	public List<SOUpgradableData> upgradeables;
 	public List<int> comboLimit;
-
-	public float uTime;
-	public float uChanceBonus;
-	public float uChanceGem;
-	public float uExtraTotalBonus;
-	public float uSlideSpeed;
-	public float uMistakeCost;
-
-
-	private int _mistakes = 0;
 	private int _comboCounter = 0;
 	private int _maxComboCounter = 0;
-	private List<int> _cannedFish = new List<int> (6);
+	private Dictionary<LevelMultiplierType, int> _collectedCannedFish = new Dictionary<LevelMultiplierType, int> ();
+	private bool isPowerUpActivated;
+	private float powerUpTimerCounter;
+	private float powerUpTimerTotal = 5;
+	private BonusCannedFoodType currentActivePowerUp;
+
 
 	void Awake ()
 	{
 		playMode = GamePlayModeType.Say_The_Color;
-		for (int i = 0; i < comboLimit.Count; i++) 
-			_cannedFish.Add (0);
+
+		_collectedCannedFish [LevelMultiplierType.Negative1] = 0;
+		_collectedCannedFish [LevelMultiplierType.Positive05] = 0;
+		_collectedCannedFish [LevelMultiplierType.Positive1] = 0;
+		_collectedCannedFish [LevelMultiplierType.Positive2] = 0;
+		_collectedCannedFish [LevelMultiplierType.Positive4] = 0;
+		_collectedCannedFish [LevelMultiplierType.Positive8] = 0;
+		_collectedCannedFish [LevelMultiplierType.InstantBonus] = 0;
 	
-	
-	
+		isPowerUpActivated = false;
+		currentActivePowerUp = BonusCannedFoodType.None;
+		powerUpTimerCounter = 0;
 	}
-
-
-
-
 
 	void OnGUI ()
 	{
 		if (isDebug) {
 			GUILayout.BeginVertical ("box");
-				GUILayout.Label ("PlayMode : " + playMode);
+			GUILayout.Label ("PlayMode : " + playMode);
 			GUILayout.EndVertical ();
 			GUILayout.BeginVertical ("box");
-				for (int i = 0; i < comboLimit.Count; i++) {
-					GUILayout.Label ("Canned x" + (1 << i) + " : " + _cannedFish [i]);
-				}	
-				GUILayout.Label ("Mistakes : " + _mistakes);
-				GUILayout.Label ("Combo : " + _comboCounter);
-				GUILayout.Label ("Max Combo : " + _maxComboCounter);
+				
+			GUILayout.Label ("Actived PU : "+ currentActivePowerUp.ToString() );
+			GUILayout.Label ("Timer : " + powerUpTimerCounter );
+
+			GUILayout.Label ("Canned " + LevelMultiplierType.Negative1.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Negative1]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive05.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive05]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive1.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive1]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive2.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive2]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive4.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive4]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive4.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive8]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.InstantBonus.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.InstantBonus]);
+			GUILayout.Label ("Combo : " + _comboCounter);
+			GUILayout.Label ("Max Combo : " + _maxComboCounter);
 			GUILayout.EndVertical ();
-
-
-			if(GUI.Button(new Rect(Screen.width -200,0,200,40),"Create"))
-			{
-				CannedFoodMachineController.shared().Create();
-			}
-			if(GUI.Button(new Rect(Screen.width -200,50,200,40),"Change"))
-			{
-				TriggerPlayMode();
-			}
 		}
 	}
 
@@ -85,24 +80,127 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 				break;
 		}
 
-		int idx = Mathf.Clamp (i, 0, comboLimit.Count - 1);
 
-		_cannedFish [idx]++;
-		_comboCounter++;
+		int idx = Mathf.Clamp (i, 0, comboLimit.Count - 1);
+		LevelMultiplierType canMultiplier = (LevelMultiplierType)LevelMultiplierType.Positive1 + idx;
+
+
+
+		//POWER UP ------------------------------------------------------------------------------------------------------------------------
+
+		//POWER UP BAD CAN
+		CheckBadCan (ref canMultiplier);
+
+		//POWER UP CAN CAN
+		StartCoroutine (CheckCanCan (canMultiplier));
+
+		_collectedCannedFish [canMultiplier]++;
+		CannedFoodMachineController.shared ().CreateCan (canMultiplier);
+
 		 
+
+
+
+
+		//POWER UP ------------------------------------------------------------------------------------------------------------------------
+
+		_comboCounter++;
 		if (_comboCounter > _maxComboCounter) {
 			_maxComboCounter = _comboCounter;
 		}
-
 	}
 
 	public void DoMistake ()
 	{
-		_mistakes++;
 		_comboCounter = 0;
+		_collectedCannedFish [(LevelMultiplierType)LevelMultiplierType.Negative1]++;
+		CannedFoodMachineController.shared ().CreateCan (LevelMultiplierType.Negative1);
 	}
 
+	private void CheckBadCan (ref LevelMultiplierType canMultiplier)
+	{
+		if (currentActivePowerUp == BonusCannedFoodType.BadCan) {
+			canMultiplier = LevelMultiplierType.Positive05;
+		} 
+	}
 
+	private IEnumerator CheckCanCan (LevelMultiplierType canMultiplier)
+	{
+		yield return new WaitForSeconds (0.2f);
+		if (currentActivePowerUp == BonusCannedFoodType.CanCan) {
+			_collectedCannedFish [canMultiplier]++;
+			CannedFoodMachineController.shared ().CreateCan (canMultiplier);
+		} 
+	}
 
+	public void TriggerPowerUp (BonusCannedFoodType powerUp)
+	{
+		switch (powerUp) {
+			case BonusCannedFoodType.TimePlus:
+			{
+				break;
+			}
+			case BonusCannedFoodType.TimeMinus:
+			{
+				break;
+			}
+			case BonusCannedFoodType.BonusGem:
+			{
+				break;
+			}
+			case BonusCannedFoodType.InstantCoin:
+			{
+				break;
+			}
+			case BonusCannedFoodType.SwitchPlayMode:
+			{
+				TriggerPlayMode ();
+				break;
+			}
+			case BonusCannedFoodType.TapToSlide:
+			{
+				isPowerUpActivated = true;
+				powerUpTimerTotal = 5;
+				powerUpTimerCounter = powerUpTimerTotal;
+				currentActivePowerUp = BonusCannedFoodType.TapToSlide;
+				break;
+			}
+			case BonusCannedFoodType.BadCan:
+			{
+				isPowerUpActivated = true;
+				powerUpTimerTotal = 5;
+				powerUpTimerCounter = powerUpTimerTotal;
+				currentActivePowerUp = BonusCannedFoodType.BadCan;
+				break;
+			}
+			case BonusCannedFoodType.CanCan:
+			{
+				isPowerUpActivated = true;
+				powerUpTimerTotal = 5;
+				powerUpTimerCounter = powerUpTimerTotal;
+				currentActivePowerUp = BonusCannedFoodType.CanCan;
+				break;
+			}
+		}
+	}
+
+	public void Update ()
+	{
+		if (isPowerUpActivated) {
+
+			powerUpTimerCounter-=Time.deltaTime;
+
+			if (powerUpTimerCounter <= 0) {
+				powerUpTimerCounter = 0;
+				currentActivePowerUp = BonusCannedFoodType.None;
+				isPowerUpActivated= false;	
+			}
+		}
+	}
+
+	public bool isActivatedPowerUp(BonusCannedFoodType type)
+	{
+		return (currentActivePowerUp == type);
+	}
 
 }

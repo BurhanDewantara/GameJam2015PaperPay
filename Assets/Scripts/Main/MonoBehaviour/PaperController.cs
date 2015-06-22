@@ -22,7 +22,7 @@ public class PaperController : MonoBehaviour {
 	{
 		_paperList = PaperGameManager.shared ().paperInGame;
 
-		float power = 10;/* #### value from upgradeable*/
+		float power = 100;/* #### value from upgradeable*/
 		leftPanel.GetComponent<Magnet> ().magnetPower = power;
 		topPanel.GetComponent<Magnet> ().magnetPower = power;
 		rightPanel.GetComponent<Magnet> ().magnetPower = power;
@@ -45,6 +45,7 @@ public class PaperController : MonoBehaviour {
 
 		bottomPanel.GetComponent<PaperDropPanel> ().AddColorRangeTarget(restColor);   
 		bottomPanel.GetComponent<PaperDropPanel> ().isTrashPanel = true;
+
 	}
 
 	void Start()
@@ -91,28 +92,80 @@ public class PaperController : MonoBehaviour {
 
 
 	#region Paper Handler
+
+	void AutoMagnet(GameObject paper)
+	{
+		SOColor countedObject = null; 
+		switch (PaperGameManager.shared ().playMode) 
+		{
+		case GamePlayModeType.Say_The_Color : 
+			countedObject = paper.GetComponent<PaperContent>().paper.colorTint;
+			break;
+		case GamePlayModeType.Say_The_Text : 
+			countedObject = paper.GetComponent<PaperContent>().paper.colorText;
+			break;
+		}
+
+//		if(topPanel<Magnet>())
+			
+		if (topPanel.GetComponent<PaperDropPanel> ().IsColorExist (countedObject)) {
+			topPanel.GetComponent<Magnet> ().AddMagnetObject (paper);
+		}
+
+		else if (rightPanel.GetComponent<PaperDropPanel> ().IsColorExist (countedObject)) {
+			rightPanel.GetComponent<Magnet> ().AddMagnetObject (paper);
+		}
+
+		else if (leftPanel.GetComponent<PaperDropPanel> ().IsColorExist (countedObject)) {
+			leftPanel.GetComponent<Magnet> ().AddMagnetObject (paper);
+		}
+
+		else if (bottomPanel.GetComponent<PaperDropPanel> ().IsColorExist (countedObject)) {
+			bottomPanel.GetComponent<Magnet> ().AddMagnetObject (paper);
+		}
+
+	}
+
+
 	void HandleOnDropAtTopPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		topPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+			AutoMagnet(sender);
+		} else {
+			topPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		}
+
 	}
 
 	void HandleOnDropAtRightPanel (GameObject sender)
 	{
-		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		rightPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;
+		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+			AutoMagnet (sender);
+		} else {
+			rightPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		}
 	}
 
 	void HandleOnDropAtLeftPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		leftPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+			AutoMagnet (sender);
+		} else {
+			leftPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		}
 	}
 
 	void HandleOnDropAtBottomPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		bottomPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+			AutoMagnet (sender);
+		} else {
+			bottomPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
+		}
 	}
 
 
