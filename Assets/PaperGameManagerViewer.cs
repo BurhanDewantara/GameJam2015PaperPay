@@ -17,32 +17,32 @@ public class PaperGameManagerViewer : MonoBehaviour
 			if (showHelper = GUI.Toggle (new Rect (0, Screen.height - 20, 20, 20), showHelper, "")) 
 			{
 				if (GUI.Button (new Rect (padw + width * 0, Screen.height-height * 1, width, height), "PlayMode")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.SwitchPlayMode);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.SwitchPlayMode);
 				}
 				
 				if (GUI.Button (new Rect (padw + width * 1, Screen.height-height * 1, width, height), "BadCan")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.BadCan);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.BadCan);
 				}
 				
 				if (GUI.Button (new Rect (padw + width * 2, Screen.height-height * 1, width, height), "CanCan")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.CanCan);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.CanCan);
 				}
 
 				if (GUI.Button (new Rect (padw + width * 0, Screen.height-height * 2, width, height), "Instant Coin")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.InstantCoin);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.InstantCoin);
 				}
 
 				if (GUI.Button (new Rect (padw + width * 1, Screen.height-height * 2, width, height), "TapToSlide")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.TapToSlide);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.TapToSlide);
 				}
 				if (GUI.Button (new Rect (padw + width * 2, Screen.height-height * 2, width, height), "TimeMinus")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.TimeMinus);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.TimeMinus);
 				}
 				if (GUI.Button (new Rect (padw + width * 0, Screen.height-height * 3, width, height), "TimePlus")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.TimePlus);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.TimePlus);
 				}
 				if (GUI.Button (new Rect (padw + width * 1, Screen.height-height * 3, width, height), "BonusGem")) {
-					PaperGameManager.shared ().TriggerPowerUp (BonusCannedFoodType.BonusGem);
+					BonusPowerUpController.shared ().TriggerPowerUp (BonusCannedFoodType.BonusGem);
 				}
 			}
 		}

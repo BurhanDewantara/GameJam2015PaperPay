@@ -18,6 +18,8 @@ public class PaperController : MonoBehaviour {
 	private int _maxPaperCount = 10;
 	private int _counter = 0;
 
+	private bool isAutoMode;
+
 	void Awake()
 	{
 		_paperList = PaperGameManager.shared ().paperInGame;
@@ -46,6 +48,20 @@ public class PaperController : MonoBehaviour {
 		bottomPanel.GetComponent<PaperDropPanel> ().AddColorRangeTarget(restColor);   
 		bottomPanel.GetComponent<PaperDropPanel> ().isTrashPanel = true;
 
+		isAutoMode = false;
+
+		BonusPowerUpController.shared().OnSlidePowerUpTriggered += HandleOnSlidePowerUpTriggered;
+		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;;
+	}
+
+	void HandleOnPowerUpEnded (GameObject sender)
+	{
+		isAutoMode = false;
+	}
+
+	void HandleOnSlidePowerUpTriggered (GameObject sender)
+	{
+		isAutoMode = true;
 	}
 
 	void Start()
@@ -130,7 +146,7 @@ public class PaperController : MonoBehaviour {
 	void HandleOnDropAtTopPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+		if (isAutoMode) {
 			AutoMagnet(sender);
 		} else {
 			topPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
@@ -141,7 +157,7 @@ public class PaperController : MonoBehaviour {
 	void HandleOnDropAtRightPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;
-		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+		if (isAutoMode) {
 			AutoMagnet (sender);
 		} else {
 			rightPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
@@ -151,7 +167,7 @@ public class PaperController : MonoBehaviour {
 	void HandleOnDropAtLeftPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+		if (isAutoMode) {
 			AutoMagnet (sender);
 		} else {
 			leftPanel.GetComponent<Magnet> ().AddMagnetObject (sender);
@@ -161,7 +177,7 @@ public class PaperController : MonoBehaviour {
 	void HandleOnDropAtBottomPanel (GameObject sender)
 	{
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
-		if (PaperGameManager.shared().isActivatedPowerUp(BonusCannedFoodType.TapToSlide)) {
+		if (isAutoMode) {
 			AutoMagnet (sender);
 		} else {
 			bottomPanel.GetComponent<Magnet> ().AddMagnetObject (sender);

@@ -49,6 +49,15 @@ public class PlayerUpgradableDataManager : Singleton<PlayerUpgradableDataManager
 		}
 	}
 
+	public int GetUpgradeDataLevel(UpgradableType key)
+	{
+		if (playerUpgradableData.ContainsKey(key))
+		{	
+			return (int)playerUpgradableData[key];
+		}
+		return 0;
+	}
+
 
 	public override string ToString ()
 	{
