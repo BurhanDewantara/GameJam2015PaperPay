@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 74df869f9cc8a044d8e16781b3a377ae
+guid: 84f385c6a4d299d4bbba909b149a9f91
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
@@ -21,7 +21,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -3
+  textureFormat: -1
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
@@ -43,5 +43,5 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
-  spritePackingTag: 
+  spritePackingTag: TimerAnimation
   userData: 

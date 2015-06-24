@@ -54,7 +54,7 @@ public class PaperController : MonoBehaviour {
 		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;;
 	}
 
-	void HandleOnPowerUpEnded (GameObject sender)
+	void HandleOnPowerUpEnded (GameObject sender, float timer)
 	{
 		isAutoMode = false;
 	}

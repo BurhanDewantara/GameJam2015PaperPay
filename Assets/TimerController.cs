@@ -14,6 +14,7 @@ public class TimerController : SingletonMonoBehaviour<TimerController> {
 	private Slider timeSlider;
 	private float tick;
 
+
 	void Awake()
 	{
 		timeSlider = this.GetComponent<Slider> ();
@@ -37,7 +38,7 @@ public class TimerController : SingletonMonoBehaviour<TimerController> {
 		Tick ();
 
 		if (timeSlider.value >= timeSlider.maxValue) {
-			isTimeRunning = false;
+			StopTime();
 			if(OnTimesUp!=null)
 				OnTimesUp(this.gameObject);
 		}
@@ -49,24 +50,29 @@ public class TimerController : SingletonMonoBehaviour<TimerController> {
 		tick += Time.deltaTime;
 		if (tick >= 1.0f) {
 			tick %=1.0f;
-			timerHandle.GetComponent<TimerHandler>().Ticking();
+//			timerHandle.GetComponent<TimerHandler>().Ticking();
 		}
 	}
+
 
 
 	public void StartTime()
 	{
 		isTimeRunning = true;
 		timeSlider.value = 0;
+		timerHandle.GetComponent<TimerHandler> ().PlayAnimation ();
 	}
 
 	public void ResumeTime()
 	{
 		isTimeRunning = true;
+		timerHandle.GetComponent<TimerHandler> ().PlayAnimation ();
 	}
 
 	public void StopTime()
 	{
 		isTimeRunning = false;
+		timerHandle.GetComponent<TimerHandler> ().StopAnimation ();
+
 	}
 }

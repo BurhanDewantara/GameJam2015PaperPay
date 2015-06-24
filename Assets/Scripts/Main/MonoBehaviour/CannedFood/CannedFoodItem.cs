@@ -7,10 +7,23 @@ public class CannedFoodItem {
 
 	public float canMultiplier;
 	public Sprite canSprite;
+	public SOCannedFood canFood;
 
-	public CannedFoodItem (StandardCannedFood can)
+	public bool isPowerUp
 	{
-		canMultiplier = can.multiplier;
+		get{
+			return (!(canFood is StandardCannedFood));
+		}
+
+	}
+	public CannedFoodItem (SOCannedFood can)
+	{
+		this.canFood = can;
+
+		if (!isPowerUp) {
+						//unused
+			canMultiplier = (can as StandardCannedFood).multiplier;
+		}
 		canSprite = can.canSprite;
 	}
 }

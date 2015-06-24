@@ -8,9 +8,9 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 	public delegate void BonusPowerUpControllerDelegateWithTimer(GameObject sender, float timer);
 
 
-	public event BonusPowerUpControllerDelegate OnPowerUpStarted;
+	public event BonusPowerUpControllerDelegateWithTimer OnPowerUpStarted;
 	public event BonusPowerUpControllerDelegateWithTimer OnPowerUpUpdated;
-	public event BonusPowerUpControllerDelegate OnPowerUpEnded;
+	public event BonusPowerUpControllerDelegateWithTimer OnPowerUpEnded;
 
 
 	public event BonusPowerUpControllerDelegate OnTimePlusTriggered;
@@ -26,7 +26,7 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 
 
 
-	private bool isPowerUpActivated;
+	public bool isAnyPowerUpActivated;
 	private float powerUpTimerCounter;
 	private float powerUpTimerTotal = 5;
 
@@ -34,7 +34,7 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 
 	void Awake()
 	{
-		isPowerUpActivated = false;
+		isAnyPowerUpActivated = false;
 		currentActivePowerUp = BonusCannedFoodType.None;
 		powerUpTimerCounter = 0;
 	}
@@ -81,12 +81,12 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 		}
 		case BonusCannedFoodType.TapToSlide:
 		{
-			isPowerUpActivated = true;
+			isAnyPowerUpActivated = true;
 			powerUpTimerTotal = 5;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.TapToSlide;
 			if(OnPowerUpStarted !=null)
-				OnPowerUpStarted(this.gameObject);
+				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 
 			if(OnSlidePowerUpTriggered !=null)
 				OnSlidePowerUpTriggered(this.gameObject);
@@ -95,12 +95,12 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 		}
 		case BonusCannedFoodType.BadCan:
 		{
-			isPowerUpActivated = true;
+			isAnyPowerUpActivated = true;
 			powerUpTimerTotal = 5;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.BadCan;
 			if(OnPowerUpStarted !=null)
-				OnPowerUpStarted(this.gameObject);
+				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnBadCanPowerUpTriggered !=null)
 				OnBadCanPowerUpTriggered(this.gameObject);
 
@@ -109,12 +109,12 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 		case BonusCannedFoodType.CanCan:
 		{
 
-			isPowerUpActivated = true;
+			isAnyPowerUpActivated = true;
 			powerUpTimerTotal = 5;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.CanCan;
 			if(OnPowerUpStarted !=null)
-				OnPowerUpStarted(this.gameObject);
+				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnCanCanPowerUpTriggered !=null)
 				OnCanCanPowerUpTriggered(this.gameObject);
 			break;
@@ -124,7 +124,7 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 	
 	public void Update ()
 	{
-		if (isPowerUpActivated) {
+		if (isAnyPowerUpActivated) {
 
 			powerUpTimerCounter-=Time.deltaTime;
 
@@ -134,11 +134,11 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 			if (powerUpTimerCounter <= 0) {
 				powerUpTimerCounter = 0;
 				currentActivePowerUp = BonusCannedFoodType.None;
-				isPowerUpActivated= false;	
+				isAnyPowerUpActivated= false;	
 				if(OnPowerUpUpdated !=null)
 					OnPowerUpUpdated(this.gameObject,powerUpTimerCounter);
 				if(OnPowerUpEnded !=null)
-					OnPowerUpEnded(this.gameObject);
+					OnPowerUpEnded(this.gameObject,powerUpTimerCounter);
 			}
 		}
 	}

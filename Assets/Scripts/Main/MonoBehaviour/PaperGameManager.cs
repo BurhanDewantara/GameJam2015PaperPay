@@ -56,7 +56,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	}
 
-	void HandleOnPowerUpEnded (GameObject sender)
+	void HandleOnPowerUpEnded (GameObject sender, float timer)
 	{
 		currentActivePowerUp = BonusCannedFoodType.None;
 	}
