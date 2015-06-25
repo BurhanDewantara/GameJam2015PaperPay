@@ -22,7 +22,7 @@ public enum UpgradableType
 	CanMultiplier,
 	ChancesBonusCan,
 	ChancesBonusGem,
-	ExtraTotalBonus,
+	ComboShorter,
 	PaperSlideSpeed,
 	ReduceMistakePaperCost,
 	ReduceUpgradeCost,
@@ -53,6 +53,15 @@ public enum LevelMultiplierType
 	Positive8,
 	InstantBonus,
 }
+
+public enum PowerUpChoicesButtonType
+{
+	Free,
+	Pay,
+	Accept,
+	Skip,
+}
+
 
 public enum ColorType
 {

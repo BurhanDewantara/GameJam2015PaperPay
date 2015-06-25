@@ -25,4 +25,17 @@ public static class GameHelper
 	{
 		PlayerUpgradableDataManager.shared ().Upgrade (key);
 	}
+
+	public static string SetColorInText(Color color, string text)
+	{
+		var rgbString = string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", 
+		                              (int)(color.r * 255), 
+		                              (int)(color.g * 255), 
+		                              (int)(color.b * 255),
+		                              (int)(color.a * 255));
+		
+		string retVal = "<color="+rgbString+">";
+		retVal += text;
+		return retVal += "</color>";
+	}
 }

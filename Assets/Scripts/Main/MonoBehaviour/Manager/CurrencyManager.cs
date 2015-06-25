@@ -57,6 +57,7 @@ public class CurrencyManager : Singleton<CurrencyManager> {
 	{
 		if (this.IsAffordable (pCurrency)) {
 			playerCurrency -= pCurrency;
+
 			this.Save ();
 			return true;
 		}

@@ -28,7 +28,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
-	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 10,float bonusChances = 10)
+	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances     = 10,float bonusChances = 10)
 	{ 
 		MoveAllCan ();
 		GameObject obj = CreateCanObject (canPrefab);

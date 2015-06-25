@@ -8,6 +8,8 @@ public class Currency
 {	
 	public const int MAX_CURRENCY = 99999;
 	public const int MIN_CURRENCY = 0;
+	public const int MAX_GEM_CURRENCY = 9999;
+	public const int MIN_GEM_CURRENCY = 0;
 	public int coin;
 	public int gem;
 
@@ -22,7 +24,7 @@ public class Currency
 	public Currency (int coin, int gem)
 	{
 		this.coin = Mathf.Clamp (coin, MIN_CURRENCY, MAX_CURRENCY);
-		this.gem = Mathf.Clamp (gem, MIN_CURRENCY, MAX_CURRENCY);
+		this.gem = Mathf.Clamp (gem, MIN_GEM_CURRENCY, MAX_GEM_CURRENCY);
 	}
 	
 	public static Currency operator - (Currency pCurrentPrice, Currency pPrice)
@@ -51,6 +53,22 @@ public class Currency
 		                     Mathf.CeilToInt(pCurrentPrice.gem * amount)
 		                     );
 	}
+
+
+	public static Currency operator / (Currency pCurrentPrice, int amount)
+	{
+		return new Currency (pCurrentPrice.coin / amount,
+		                     pCurrentPrice.gem / amount
+		                     );
+	}
+
+	public static Currency operator / (Currency pCurrentPrice, float amount)
+	{
+		return new Currency (Mathf.CeilToInt(pCurrentPrice.coin / amount),
+		                     Mathf.CeilToInt(pCurrentPrice.gem / amount)
+		                     );
+	}
+
 	
 	public static bool operator > (Currency pCurrentPrice, Currency pPrice)
 	{

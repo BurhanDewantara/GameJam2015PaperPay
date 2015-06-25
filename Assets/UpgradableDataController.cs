@@ -8,12 +8,12 @@ public class UpgradableDataController : SingletonMonoBehaviour<UpgradableDataCon
 
 	public List<SOUpgradableData> upgradeList;
 
-	public float GetDataValue(UpgradableType key)
+	public float GetPlayerUpgradeDataValue(UpgradableType key)
 	{
 		return GetUpgradeData(key).value;
 	}
 
-	public Currency GetDataPrice(UpgradableType key)
+	public Currency GetPlayerUpgradeDataPrice(UpgradableType key)
 	{
 		return GetUpgradeData(key).price;
 	}
@@ -25,8 +25,6 @@ public class UpgradableDataController : SingletonMonoBehaviour<UpgradableDataCon
 
 		return data.upgradeData[level];
 	}
-
-
 
 	private SOUpgradableData GetData(UpgradableType key)
 	{
