@@ -16,6 +16,7 @@ public class CurrencyViewer : MonoBehaviour {
 	public void SetCurrency(Currency currency)
 	{
 		_currency = currency;
+		Refresh ();
 	}
 
 	void Refresh()
@@ -24,10 +25,10 @@ public class CurrencyViewer : MonoBehaviour {
 		switch (currencyType) {
 		
 		case CurrencyType.Coin : 
-			text.GetComponent<Text> ().text = CurrencyManager.shared().PlayerCurrency.coin.ToString();
+			text.GetComponent<Text> ().text = _currency.coin.ToString();
 			break;
 		case CurrencyType.Gem : 
-			text.GetComponent<Text> ().text = CurrencyManager.shared().PlayerCurrency.gem.ToString();
+			text.GetComponent<Text> ().text = _currency.gem.ToString();
 			break;
 		}
 	}
@@ -42,6 +43,7 @@ public class CurrencyViewer : MonoBehaviour {
 			}
 		}
 
+	
 	}
 
 }

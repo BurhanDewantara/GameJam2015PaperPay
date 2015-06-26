@@ -4,7 +4,7 @@ using Artoncode.Core;
 
 public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpController> {
 
-	public delegate void BonusPowerUpControllerDelegate(GameObject sender);
+	public delegate void BonusPowerUpControllerDelegate(GameObject sender,int amount);
 	public delegate void BonusPowerUpControllerDelegateWithTimer(GameObject sender, float timer);
 
 
@@ -46,50 +46,40 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 
 
 
-	public void TriggerPowerUp (BonusCannedFoodType powerUp)
+	public void TriggerPowerUp (BonusCannedFoodType powerUp, bool isDoubled = false)
 	{
 		switch (powerUp) {
 		case BonusCannedFoodType.TimePlus:
 		{
 			if(OnTimePlusTriggered!=null)
-				OnTimePlusTriggered(this.gameObject);
+				OnTimePlusTriggered(this.gameObject,(isDoubled ? 10 : 5));
 			break;
 		}
-		case BonusCannedFoodType.TimeMinus:
-		{
-			if(OnTimeMinusTriggered!=null)
-				OnTimeMinusTriggered(this.gameObject);
-			break;
-		}
+	
 		case BonusCannedFoodType.BonusGem:
 		{
 			if(OnBonusGemTriggered!=null)
-				OnBonusGemTriggered(this.gameObject);
+				OnBonusGemTriggered(this.gameObject,(isDoubled ? 10 : 5));
 			break;
 		}
 		case BonusCannedFoodType.InstantCoin:
 		{
 			if(OnInstantCoinTriggered!=null)
-				OnInstantCoinTriggered(this.gameObject);
+				OnInstantCoinTriggered(this.gameObject,(isDoubled ? 10 : 5));
 			break;
 		}
-		case BonusCannedFoodType.SwitchPlayMode:
-		{
-			if(OnSwitchPlayModeTriggered!=null)
-				OnSwitchPlayModeTriggered(this.gameObject);
-			break;
-		}
+	
 		case BonusCannedFoodType.TapToSlide:
 		{
 			isAnyPowerUpActivated = true;
-			powerUpTimerTotal = 5;
+			powerUpTimerTotal = isDoubled? 10: 5;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.TapToSlide;
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 
 			if(OnSlidePowerUpTriggered !=null)
-				OnSlidePowerUpTriggered(this.gameObject);
+				OnSlidePowerUpTriggered(this.gameObject,(isDoubled ? 10 : 5));
 
 			break;
 		}
@@ -102,26 +92,41 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnBadCanPowerUpTriggered !=null)
-				OnBadCanPowerUpTriggered(this.gameObject);
+				OnBadCanPowerUpTriggered(this.gameObject,5);
 
+			break;
+		}
+		case BonusCannedFoodType.SwitchPlayMode:
+		{
+			if(OnSwitchPlayModeTriggered!=null)
+				OnSwitchPlayModeTriggered(this.gameObject,0);
+			break;
+		}
+		case BonusCannedFoodType.TimeMinus:
+		{
+			if(OnTimeMinusTriggered!=null)
+				OnTimeMinusTriggered(this.gameObject,5);
 			break;
 		}
 		case BonusCannedFoodType.CanCan:
 		{
 
 			isAnyPowerUpActivated = true;
-			powerUpTimerTotal = 5;
+			powerUpTimerTotal = isDoubled? 10: 5;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.CanCan;
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnCanCanPowerUpTriggered !=null)
-				OnCanCanPowerUpTriggered(this.gameObject);
+				OnCanCanPowerUpTriggered(this.gameObject,(isDoubled ? 10 : 5));
 			break;
 		}
 		}
 	}
-	
+
+
+
+
 	public void Update ()
 	{
 		if (isAnyPowerUpActivated) {

@@ -13,6 +13,11 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 	public List<BonusCannedFood> CannedFoodBonus;
 	public List<InstantCannedFood> CannedFoodInstantBonus;
 
+
+	public GameObject powerUpPopUpPrefab;
+	private GameObject _powerUpPopUpObject;
+
+
 	private List<GameObject> _cannedFoodObject;
 
 	void Start()
@@ -59,9 +64,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 		foreach (GameObject item in _cannedFoodObject) {
 			if(anyPowerUpCanExist = item.GetComponent<CannedFoodContent> ().can.isPowerUp)
-			{
 				break;
-			}
 		}
 		return !BonusPowerUpController.shared ().isAnyPowerUpActivated && !anyPowerUpCanExist;
 	}
@@ -83,26 +86,70 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		if (can is BonusCannedFood) 
 		{
 			BonusCannedFoodType bonustype = (can as BonusCannedFood).bonusType;
-
 			//SHOW POP UP TO ACCEPT;
-
-			//FASTEST WAY
-			BonusPowerUpController.shared().TriggerPowerUp(bonustype); 
+			CreatePowerUpPopUp();
 
 		} 
 		else if (can is InstantCannedFood)
 		{
+			Debug.Log("here00");
 
 			BonusCannedFoodType bonustype = (can as InstantCannedFood).bonusType;
 			switch (bonustype) 
 			{
-				case BonusCannedFoodType.BonusGem : BonusPowerUpController.shared().TriggerPowerUp(BonusCannedFoodType.BonusGem); break;
+				case BonusCannedFoodType.BonusGem : 
+				Debug.Log("here");
+					BonusPowerUpController.shared().TriggerPowerUp(BonusCannedFoodType.BonusGem); 
+				break;
 			}
 		}
 
 		_cannedFoodObject.Remove (sender);
 		Destroy (sender);
 	}
+
+
+
+	void CreatePowerUpPopUp()
+	{
+		if (_powerUpPopUpObject == null) {
+			_powerUpPopUpObject = Instantiate(powerUpPopUpPrefab) as GameObject;
+
+			_powerUpPopUpObject.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
+			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnPayButtonClicked	 += HandlePOPOnPayButtonClicked;
+			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnFreeButtonClicked	 += HandlePOPOnFreeButtonClicked;
+			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnAcceptButtonClicked += HandlePOPOnAcceptButtonClicked;
+		}
+	}
+
+	void HandlePOPOnAcceptButtonClicked (GameObject sender, BonusCannedFood bonusCan)
+	{
+		BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,false); 
+		Destroy (sender);
+	}
+
+	void HandlePOPOnFreeButtonClicked (GameObject sender, BonusCannedFood bonusCan)
+	{
+
+		//SHOW IKLAN!
+		if(bonusCan.categoryType == BonusCategoryType.Positive)
+			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,true); 
+
+		Destroy (sender);
+	}
+
+	void HandlePOPOnPayButtonClicked (GameObject sender, BonusCannedFood bonusCan)
+	{
+		if(bonusCan.categoryType == BonusCategoryType.Positive)
+			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,true); 
+		Destroy (sender);
+	}
+
+
+
+
+
+
 
 
 

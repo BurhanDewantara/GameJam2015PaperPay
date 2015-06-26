@@ -68,7 +68,7 @@ public class PaperController : MonoBehaviour {
 		isAutoMode = false;
 	}
 
-	void HandleOnSlidePowerUpTriggered (GameObject sender)
+	void HandleOnSlidePowerUpTriggered (GameObject sender, int amount)
 	{
 		isAutoMode = true;
 	}

@@ -54,25 +54,25 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	}
 
+	
+	
+	
+	#region POWER UPS HANDLER
 	void HandleOnPowerUpEnded (GameObject sender, float timer)
 	{
 		currentActivePowerUp = BonusCannedFoodType.None;
 	}
 
-	void HandleOnBadCanPowerUpTriggered (GameObject sender)
+	void HandleOnBadCanPowerUpTriggered (GameObject sender, int amount)
 	{
 		currentActivePowerUp = BonusCannedFoodType.BadCan;
 	}
-	void HandleOnCanCanPowerUpTriggered (GameObject sender)
+	void HandleOnCanCanPowerUpTriggered (GameObject sender, int amount)
 	{
 		currentActivePowerUp = BonusCannedFoodType.CanCan;
 	}
 
-
-
-
-	#region POWER UPS HANDLER
-	void HandleOnSwitchPlayModeTriggered (GameObject sender)
+	void HandleOnSwitchPlayModeTriggered (GameObject sender, int amount)
 	{
 		switch (playMode) {
 		case GamePlayModeType.Say_The_Color:

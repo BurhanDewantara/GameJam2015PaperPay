@@ -55,7 +55,7 @@ public class TutorialSwipeInfoController : MonoBehaviour {
 			}
 		}
 
-		txt += " Swipe to " + direction.ToString ();
+		txt += " Slide to " + direction.ToString ();
 		titleText.GetComponent<Text>().text = txt;
 	}
 

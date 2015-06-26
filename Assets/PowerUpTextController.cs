@@ -48,54 +48,58 @@ public class PowerUpTextController : MonoBehaviour {
 		StopAllCoroutines ();
 	}
 
-	void HandleOnTimePlusTriggered (GameObject sender)
+	void HandleOnTimePlusTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "TIME BONUS +5 seconds";
+		PUText.text = "TIME BONUS +"+amount+" seconds";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
-	void HandleOnTimeMinusTriggered (GameObject sender)
+	void HandleOnTimeMinusTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "TIME DECREASED 5 seconds";
+		PUText.text = "TIME DECREASED "+amount+" seconds";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
-	void HandleOnInstantCoinTriggered (GameObject sender)
+	void HandleOnInstantCoinTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "You got INSTANT COIN Bonus";
+		PUText.text = "You got "+amount+" x32 Can Bonus";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
-	void HandleOnBonusGemTriggered (GameObject sender)
+	void HandleOnBonusGemTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "You got Extra GEM Bonus";
+		PUText.text = "You got Extra "+amount+" GEM Bonus";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
-	void HandleOnSwitchPlayModeTriggered (GameObject sender)
+	void HandleOnSwitchPlayModeTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
 		PUText.text = "PLAY MODE ARE CHANGING BRO";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
-	void HandleOnBadCanPowerUpTriggered (GameObject sender)
+	void HandleOnBadCanPowerUpTriggered (GameObject sender, int amount)
 	{
 		currentActivePowerUp = BonusCannedFoodType.BadCan;
 	}
 
-	void HandleOnCanCanPowerUpTriggered (GameObject sender)
+	void HandleOnCanCanPowerUpTriggered (GameObject sender, int amount)
 	{
 		currentActivePowerUp = BonusCannedFoodType.CanCan;
 	}
-	void HandleOnSlidePowerUpTriggered (GameObject sender)
+	void HandleOnSlidePowerUpTriggered (GameObject sender, int amount)
 	{
 		currentActivePowerUp = BonusCannedFoodType.TapToSlide;
 	}
+
+
+
+
 
 	void HandleOnPowerUpStarted (GameObject sender, float timer)
 	{
@@ -122,9 +126,9 @@ public class PowerUpTextController : MonoBehaviour {
 	{
 		string text = "";
 			switch (PU) {
-		case BonusCannedFoodType.CanCan : text= "CAN CAN POWER UP IN " ; break;
-		case BonusCannedFoodType.BadCan : text= "BAN CAN POWER UP IN " ; break;
-		case BonusCannedFoodType.TapToSlide : text= "TAP TO SLIDE IN " ; break;
+		case BonusCannedFoodType.CanCan : text= "Double can Power up in " ; break;
+		case BonusCannedFoodType.BadCan : text= "Defect can produced for " ; break;
+		case BonusCannedFoodType.TapToSlide : text= "Concentrate Power up in " ; break;
 		}
 		PUText.text = text + timer.ToString("0.000") + " s";
 		this.GetComponent<CanvasGroup>().alpha = 1;

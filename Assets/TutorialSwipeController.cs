@@ -9,6 +9,7 @@ public class TutorialSwipeController : MonoBehaviour {
 	public GameObject topTutorial;
 	public GameObject bottomTutorial;
 
+	//REMOVE!
 	public List<SOColor> colors;
 
 	public void Awake()
