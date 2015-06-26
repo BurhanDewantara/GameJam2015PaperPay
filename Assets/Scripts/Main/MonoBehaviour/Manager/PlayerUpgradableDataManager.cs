@@ -30,7 +30,7 @@ public class PlayerUpgradableDataManager : Singleton<PlayerUpgradableDataManager
 			playerUpgradableData.Add(UpgradableType.CanMultiplier,0);
 			playerUpgradableData.Add(UpgradableType.ChancesBonusCan,0);
 			playerUpgradableData.Add(UpgradableType.ChancesBonusGem,0);
-			playerUpgradableData.Add(UpgradableType.ExtraTotalBonus,0);
+			playerUpgradableData.Add(UpgradableType.ComboShorter,0);
 			playerUpgradableData.Add(UpgradableType.PaperSlideSpeed,0);
 			playerUpgradableData.Add(UpgradableType.PermanentTime,0);
 			playerUpgradableData.Add(UpgradableType.ReduceMistakePaperCost,0);
@@ -46,6 +46,7 @@ public class PlayerUpgradableDataManager : Singleton<PlayerUpgradableDataManager
 			int currentValue =(int) playerUpgradableData[key];
 			currentValue +=up;
 			playerUpgradableData[key] = currentValue;
+			this.Save ();
 		}
 	}
 

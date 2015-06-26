@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: d0435782edf6b9049a6d62ce84711575
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - freeButton: {fileID: 21300000, guid: 218b7122b20edf64faf4e620f02fd6b0, type: 3}
+  - payButton: {fileID: 21300000, guid: 764f7d2db5f56b640afe367a34e78b05, type: 3}
+  - skipButton: {fileID: 21300000, guid: 4a4b8b2e06600c242ace8853afc2d364, type: 3}
+  - acceptButton: {fileID: 21300000, guid: fd59c5184c4804447aa70bd368fe8cb2, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

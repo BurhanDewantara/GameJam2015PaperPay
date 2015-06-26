@@ -5,6 +5,7 @@ public class SOUpgradableData : ScriptableObject {
 
 	public string upgradeName;
 	public string upgradeDetail;
+	public string upgradeUnit;
 	public UpgradableType UpgradeType;
 	public List<UpgradeData> upgradeData;
 	

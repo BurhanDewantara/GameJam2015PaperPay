@@ -12,32 +12,30 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	public List<SOUpgradableData> upgradeables;
 	public List<int> comboLimit;
 
-	public float GAMETIME;
 
 	private int _comboCounter = 0;
 	private int _maxComboCounter = 0;
-	private Dictionary<LevelMultiplierType, int> _collectedCannedFish = new Dictionary<LevelMultiplierType, int> ();
+	private Dictionary<LevelMultiplierType, int> _collectedCannedFood = new Dictionary<LevelMultiplierType, int> ();
 	private BonusCannedFoodType currentActivePowerUp; 
+
 
 	void Awake ()
 	{
 		playMode = GamePlayModeType.Say_The_Color;
 
-		_collectedCannedFish [LevelMultiplierType.Negative1] = 0;
-		_collectedCannedFish [LevelMultiplierType.Positive05] = 0;
-		_collectedCannedFish [LevelMultiplierType.Positive1] = 0;
-		_collectedCannedFish [LevelMultiplierType.Positive2] = 0;
-		_collectedCannedFish [LevelMultiplierType.Positive4] = 0;
-		_collectedCannedFish [LevelMultiplierType.Positive8] = 0;
-		_collectedCannedFish [LevelMultiplierType.InstantBonus] = 0;
+		_collectedCannedFood [LevelMultiplierType.Negative1] = 0;
+		_collectedCannedFood [LevelMultiplierType.Positive05] = 0;
+		_collectedCannedFood [LevelMultiplierType.Positive1] = 0;
+		_collectedCannedFood [LevelMultiplierType.Positive2] = 0;
+		_collectedCannedFood [LevelMultiplierType.Positive4] = 0;
+		_collectedCannedFood [LevelMultiplierType.Positive8] = 0;
+		_collectedCannedFood [LevelMultiplierType.InstantBonus] = 0;
 	
 	}
 
-
 	void Start()
 	{
-		GAMETIME = UpgradableDataController.shared ().GetDataValue (UpgradableType.PermanentTime);
-		SetGameTime (GAMETIME);
+		SetGameTime (UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.PermanentTime));
 		InitPowerUpHandler ();
 	}
 
@@ -98,7 +96,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	{
 		yield return new WaitForSeconds (0.2f);
 		if (currentActivePowerUp == BonusCannedFoodType.CanCan) {
-			_collectedCannedFish [canMultiplier]++;
+			_collectedCannedFood [canMultiplier]++;
 			CannedFoodMachineController.shared ().CreateCan (canMultiplier);
 		} 
 	}
@@ -116,13 +114,13 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			GUILayout.EndVertical ();
 			GUILayout.BeginVertical ("box");
 				
-			GUILayout.Label ("Canned " + LevelMultiplierType.Negative1.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Negative1]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.Positive05.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive05]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.Positive1.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive1]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.Positive2.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive2]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.Positive4.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive4]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.Positive8.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.Positive8]);
-			GUILayout.Label ("Canned " + LevelMultiplierType.InstantBonus.ToString () + " : " + _collectedCannedFish [LevelMultiplierType.InstantBonus]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Negative1.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Negative1]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive05.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Positive05]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive1.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Positive1]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive2.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Positive2]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive4.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Positive4]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.Positive8.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.Positive8]);
+			GUILayout.Label ("Canned " + LevelMultiplierType.InstantBonus.ToString () + " : " + _collectedCannedFood [LevelMultiplierType.InstantBonus]);
 			GUILayout.Label ("Combo : " + _comboCounter);
 			GUILayout.Label ("Max Combo : " + _maxComboCounter);
 			GUILayout.EndVertical ();
@@ -153,7 +151,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		//POWER UP CAN CAN
 		StartCoroutine (CheckCanCan (canMultiplier));
 
-		_collectedCannedFish [canMultiplier]++;
+		_collectedCannedFood [canMultiplier]++;
 		CannedFoodMachineController.shared ().CreateCan (canMultiplier);
 
 		 
@@ -172,10 +170,9 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	public void DoMistake ()
 	{
 		_comboCounter = 0;
-		_collectedCannedFish [(LevelMultiplierType)LevelMultiplierType.Negative1]++;
+		_collectedCannedFood [(LevelMultiplierType)LevelMultiplierType.Negative1]++;
 		CannedFoodMachineController.shared ().CreateCan (LevelMultiplierType.Negative1);
 	}
-
 
 
 

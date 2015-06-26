@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: f12ee4ed63666dc4a9a1ae504b156d19
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - GemSprite: {fileID: 21300000, guid: c7d6be0a51a55a04390647195033fb96, type: 3}
+  - CoinSprite: {fileID: 21300000, guid: 4689592024e852e4aa52a90887715056, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

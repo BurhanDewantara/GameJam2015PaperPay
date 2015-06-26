@@ -66,7 +66,7 @@ public class Viewer : MonoBehaviour
 		GUILayout.BeginHorizontal ();
 		{
 			if (GUILayout.Button ("+ Score")) {
-				GameHelper.Upgrade (UpgradableType.ExtraTotalBonus);
+				GameHelper.Upgrade (UpgradableType.ComboShorter);
 			}
 			if (GUILayout.Button ("+ Speed")) {
 				GameHelper.Upgrade (UpgradableType.PaperSlideSpeed);

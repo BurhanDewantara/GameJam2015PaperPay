@@ -9,6 +9,8 @@ public class PaperController : MonoBehaviour {
 	public GameObject rightPanel;
 	public GameObject bottomPanel;
 
+	public GameObject centerPanel;
+
 	public GameObject paperPrefab;
 	public GameObject paperContainerPanel;
 
@@ -35,6 +37,8 @@ public class PaperController : MonoBehaviour {
 		topPanel.GetComponent<Magnet>().OnObjectMagnetized += HandleOnObjectMagnetized;
 		bottomPanel.GetComponent<Magnet>().OnObjectMagnetized += HandleOnObjectMagnetized;
 
+		centerPanel.GetComponent<Magnet>().OnObjectMagnetized += HandleOnCenterPanelObjectMagnetized;
+
 		leftPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [0]);
 		rightPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [1]);
 		topPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [2]);
@@ -54,6 +58,11 @@ public class PaperController : MonoBehaviour {
 		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;;
 	}
 
+	void HandleOnCenterPanelObjectMagnetized (GameObject sender, GameObject magnetObject)
+	{
+		sender.GetComponent<Magnet> ().RemoveMagnetObject (magnetObject);
+	}
+
 	void HandleOnPowerUpEnded (GameObject sender, float timer)
 	{
 		isAutoMode = false;
@@ -66,18 +75,32 @@ public class PaperController : MonoBehaviour {
 
 	void Start()
 	{
-		CreatePaper ();
+		StartCoroutine( InitCreatePaper ());
 	}
 
 	void CreatePaper()
 	{
 		while (paperContainerPanel.GetComponent<PaperContainer>().Papers.Count < _maxPaperCount) {
-		
 			GameObject obj = GeneratePaperObject(paperPrefab);
 			paperContainerPanel.GetComponent<PaperContainer>().AddPaper(obj);
 			obj.GetComponent<PaperContent>().SetItem (GeneratePaperItem());
+			obj.GetComponent<RectTransform>().position = centerPanel.GetComponent<RectTransform>().position;
+			centerPanel.GetComponent<Magnet>().AddMagnetObject(obj);
 			_counter++;
 		}
+	}
+
+	IEnumerator InitCreatePaper()
+	{
+		while (paperContainerPanel.GetComponent<PaperContainer>().Papers.Count < _maxPaperCount) {
+			GameObject obj = GeneratePaperObject(paperPrefab);
+			paperContainerPanel.GetComponent<PaperContainer>().AddPaper(obj);
+			obj.GetComponent<PaperContent>().SetItem (GeneratePaperItem());
+			centerPanel.GetComponent<Magnet>().AddMagnetObject(obj);
+			_counter++;
+			yield return new WaitForSeconds(0.1f);
+		}
+
 //		paperContainerPanel.GetComponent<PaperContainer> ().Papers [0].GetComponent<PaperContentViewer> ().IsAccessible = true;
 	}
 
@@ -121,8 +144,6 @@ public class PaperController : MonoBehaviour {
 			countedObject = paper.GetComponent<PaperContent>().paper.colorText;
 			break;
 		}
-
-//		if(topPanel<Magnet>())
 			
 		if (topPanel.GetComponent<PaperDropPanel> ().IsColorExist (countedObject)) {
 			topPanel.GetComponent<Magnet> ().AddMagnetObject (paper);
