@@ -46,40 +46,40 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 
 
 
-	public void TriggerPowerUp (BonusCannedFoodType powerUp, bool isDoubled = false)
+	public void TriggerPowerUp (BonusCannedFoodType powerUp, int amount = 5, bool isDoubled = false)
 	{
 		switch (powerUp) {
 		case BonusCannedFoodType.TimePlus:
 		{
 			if(OnTimePlusTriggered!=null)
-				OnTimePlusTriggered(this.gameObject,(isDoubled ? 10 : 5));
+				OnTimePlusTriggered(this.gameObject,(isDoubled ? amount*2 : amount));
 			break;
 		}
 	
 		case BonusCannedFoodType.BonusGem:
 		{
 			if(OnBonusGemTriggered!=null)
-				OnBonusGemTriggered(this.gameObject,(isDoubled ? 10 : 5));
+				OnBonusGemTriggered(this.gameObject,(isDoubled ? amount*2 : amount));
 			break;
 		}
 		case BonusCannedFoodType.InstantCoin:
 		{
 			if(OnInstantCoinTriggered!=null)
-				OnInstantCoinTriggered(this.gameObject,(isDoubled ? 10 : 5));
+				OnInstantCoinTriggered(this.gameObject,(isDoubled ? amount*2 : amount));
 			break;
 		}
 	
 		case BonusCannedFoodType.TapToSlide:
 		{
 			isAnyPowerUpActivated = true;
-			powerUpTimerTotal = isDoubled? 10: 5;
+			powerUpTimerTotal = isDoubled? amount*2 : amount;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.TapToSlide;
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 
 			if(OnSlidePowerUpTriggered !=null)
-				OnSlidePowerUpTriggered(this.gameObject,(isDoubled ? 10 : 5));
+				OnSlidePowerUpTriggered(this.gameObject,(isDoubled ? amount*2 : amount));
 
 			break;
 		}
@@ -92,33 +92,33 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnBadCanPowerUpTriggered !=null)
-				OnBadCanPowerUpTriggered(this.gameObject,5);
+				OnBadCanPowerUpTriggered(this.gameObject,amount);
 
 			break;
 		}
 		case BonusCannedFoodType.SwitchPlayMode:
 		{
 			if(OnSwitchPlayModeTriggered!=null)
-				OnSwitchPlayModeTriggered(this.gameObject,0);
+				OnSwitchPlayModeTriggered(this.gameObject,amount);
 			break;
 		}
 		case BonusCannedFoodType.TimeMinus:
 		{
 			if(OnTimeMinusTriggered!=null)
-				OnTimeMinusTriggered(this.gameObject,5);
+				OnTimeMinusTriggered(this.gameObject,amount);
 			break;
 		}
 		case BonusCannedFoodType.CanCan:
 		{
 
 			isAnyPowerUpActivated = true;
-			powerUpTimerTotal = isDoubled? 10: 5;
+			powerUpTimerTotal = isDoubled? amount*2 : amount;
 			powerUpTimerCounter = powerUpTimerTotal;
 			currentActivePowerUp = BonusCannedFoodType.CanCan;
 			if(OnPowerUpStarted !=null)
 				OnPowerUpStarted(this.gameObject,powerUpTimerTotal);
 			if(OnCanCanPowerUpTriggered !=null)
-				OnCanCanPowerUpTriggered(this.gameObject,(isDoubled ? 10 : 5));
+				OnCanCanPowerUpTriggered(this.gameObject,(isDoubled ? amount*2 : amount));
 			break;
 		}
 		}

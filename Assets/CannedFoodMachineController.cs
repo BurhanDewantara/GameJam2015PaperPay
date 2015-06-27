@@ -33,7 +33,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
-	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances     = 10,float bonusChances = 10)
+	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 10,float bonusChances = 10)
 	{ 
 		MoveAllCan ();
 		GameObject obj = CreateCanObject (canPrefab);
@@ -47,9 +47,10 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			{
 				CanFood = GetInstantCannedFood(BonusCannedFoodType.BonusGem);
 			} 
-			else if (isChancesHit (bonusChances)) 
+			else if (isChancesHit (bonusChances) || true) 
 			{ 
-				int randresult = Random.Range(0,7);
+//				int randresult = Random.Range(0,8);
+				int randresult = 7;
 				CanFood = GetBonusCannedFood((BonusCannedFoodType)randresult);
 			} 
 		}
@@ -85,21 +86,17 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 		if (can is BonusCannedFood) 
 		{
-			BonusCannedFoodType bonustype = (can as BonusCannedFood).bonusType;
-			//SHOW POP UP TO ACCEPT;
-			CreatePowerUpPopUp();
+			CreatePowerUpPopUp(can as BonusCannedFood);
+			TimerController.shared().StopTime();
 
 		} 
 		else if (can is InstantCannedFood)
 		{
-			Debug.Log("here00");
-
 			BonusCannedFoodType bonustype = (can as InstantCannedFood).bonusType;
 			switch (bonustype) 
 			{
 				case BonusCannedFoodType.BonusGem : 
-				Debug.Log("here");
-					BonusPowerUpController.shared().TriggerPowerUp(BonusCannedFoodType.BonusGem); 
+				BonusPowerUpController.shared().TriggerPowerUp((can as InstantCannedFood).bonusType,(can as InstantCannedFood).bonusAmount); 
 				break;
 			}
 		}
@@ -110,7 +107,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 
 
-	void CreatePowerUpPopUp()
+	void CreatePowerUpPopUp(BonusCannedFood bonusCan)
 	{
 		if (_powerUpPopUpObject == null) {
 			_powerUpPopUpObject = Instantiate(powerUpPopUpPrefab) as GameObject;
@@ -119,13 +116,16 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnPayButtonClicked	 += HandlePOPOnPayButtonClicked;
 			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnFreeButtonClicked	 += HandlePOPOnFreeButtonClicked;
 			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().OnAcceptButtonClicked += HandlePOPOnAcceptButtonClicked;
+			_powerUpPopUpObject.GetComponent<PowerUpPopUpController>().SetBonusCan (bonusCan, new Currency(0,2));
+
 		}
 	}
 
 	void HandlePOPOnAcceptButtonClicked (GameObject sender, BonusCannedFood bonusCan)
 	{
-		BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,false); 
+		BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,false); 
 		Destroy (sender);
+		TimerController.shared ().ResumeTime ();
 	}
 
 	void HandlePOPOnFreeButtonClicked (GameObject sender, BonusCannedFood bonusCan)
@@ -133,16 +133,17 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 		//SHOW IKLAN!
 		if(bonusCan.categoryType == BonusCategoryType.Positive)
-			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,true); 
-
+			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
+		TimerController.shared ().ResumeTime ();
 	}
 
 	void HandlePOPOnPayButtonClicked (GameObject sender, BonusCannedFood bonusCan)
 	{
 		if(bonusCan.categoryType == BonusCategoryType.Positive)
-			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,true); 
+			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
+		TimerController.shared ().ResumeTime ();
 	}
 
 

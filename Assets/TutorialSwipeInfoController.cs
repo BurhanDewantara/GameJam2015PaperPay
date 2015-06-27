@@ -84,7 +84,6 @@ public class TutorialSwipeInfoController : MonoBehaviour {
 				waitTime+= Time.deltaTime;
 				if(waitTime >= waitTimeLimit)
 				{ 
-					Debug.Log (waitTime);
 					waitTime = 0;
 					_movement = -_range/2;
 				}

@@ -54,6 +54,11 @@ public class TimerController : SingletonMonoBehaviour<TimerController> {
 		}
 	}
 
+	public void EditTime(float time)
+	{
+		timeSlider.value -= time;
+	}
+
 
 
 	public void StartTime()

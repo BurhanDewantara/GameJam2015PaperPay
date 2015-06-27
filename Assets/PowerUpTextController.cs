@@ -51,21 +51,21 @@ public class PowerUpTextController : MonoBehaviour {
 	void HandleOnTimePlusTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "TIME BONUS +"+amount+" seconds";
+		PUText.text = "Work time added, +"+amount+" seconds";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
 	void HandleOnTimeMinusTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "TIME DECREASED "+amount+" seconds";
+		PUText.text = "Time decreased "+amount+" seconds";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
 	void HandleOnInstantCoinTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "You got "+amount+" x32 Can Bonus";
+		PUText.text = "You got "+amount+" Cans of x32 Bonus";
 		StartCoroutine (FadeOutCoroutine());
 	}
 
@@ -79,7 +79,17 @@ public class PowerUpTextController : MonoBehaviour {
 	void HandleOnSwitchPlayModeTriggered (GameObject sender, int amount)
 	{
 		InitPowerUpText ();
-		PUText.text = "PLAY MODE ARE CHANGING BRO";
+		string text= "";
+		switch (PaperGameManager.shared().playMode)
+		{
+		case GamePlayModeType.Say_The_Color : 
+			text = "[WORD MODE ACTIVATED]!!";
+			break;
+		case GamePlayModeType.Say_The_Word : 
+			text = "[COLOR MODE ACTIVATED]!!";
+			break;
+		}
+		PUText.text = text;
 		StartCoroutine (FadeOutCoroutine());
 	}
 

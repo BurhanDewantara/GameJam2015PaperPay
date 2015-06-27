@@ -54,6 +54,7 @@ public class PowerUpPopUpController : MonoBehaviour {
 		SetBonusCan(bonusCan,new Currency(10,0));
 	}
 
+
 	public void SetBonusCan(BonusCannedFood bonusCan,Currency price)
 	{
 		this.bonusCan = bonusCan;
@@ -71,8 +72,22 @@ public class PowerUpPopUpController : MonoBehaviour {
 			break;
 		}
 
-		bonusText.GetComponent<Text> ().text = bonusCan.bonusText;
 
+		string text = bonusCan.bonusText;
+		if(bonusCan.bonusType == BonusCannedFoodType.SwitchPlayMode)
+		{
+			switch (PaperGameManager.shared().playMode)
+			{
+			case GamePlayModeType.Say_The_Color : 
+				text = bonusCan.bonusText;
+				break;
+			case GamePlayModeType.Say_The_Word : 
+				text = bonusCan.bonusText2;
+				break;
+			}
+		}
+
+		bonusText.GetComponent<Text> ().text = text;
 
 		bonusFreeButton.GetComponent<OptionButtonController> ().SetText (buttonText);
 		bonusPayButton.GetComponent<PriceOptionButtonController> ().SetText (buttonText);

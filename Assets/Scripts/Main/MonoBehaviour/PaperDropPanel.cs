@@ -7,7 +7,7 @@ public class PaperDropPanel : MonoBehaviour {
 	public List<SOColor> colorTargets = new List<SOColor>();
 	public bool isTrashPanel = false;
 
-	public void AddColorRangeTarget(List<SOColor> target)
+	public void AddColorTarget(List<SOColor> target)
 	{
 		colorTargets.AddRange (target);
 	}

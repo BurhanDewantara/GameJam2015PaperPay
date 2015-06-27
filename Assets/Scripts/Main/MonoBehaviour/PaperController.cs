@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Artoncode.Core;
 
-public class PaperController : MonoBehaviour {
+public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	public GameObject leftPanel;
 	public GameObject topPanel;
@@ -26,7 +27,8 @@ public class PaperController : MonoBehaviour {
 	{
 		_paperList = PaperGameManager.shared ().paperInGame;
 
-		float power = 100;/* #### value from upgradeable*/
+		float power = 100
+			;/* #### value from upgradeable*/
 		leftPanel.GetComponent<Magnet> ().magnetPower = power;
 		topPanel.GetComponent<Magnet> ().magnetPower = power;
 		rightPanel.GetComponent<Magnet> ().magnetPower = power;
@@ -39,24 +41,29 @@ public class PaperController : MonoBehaviour {
 
 		centerPanel.GetComponent<Magnet>().OnObjectMagnetized += HandleOnCenterPanelObjectMagnetized;
 
-		leftPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [0]);
-		rightPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [1]);
-		topPanel.GetComponent<PaperDropPanel> ().AddColorTarget(_paperList [2]);
-
-		List<SOColor> restColor = new List<SOColor> ();
-		restColor.AddRange (_paperList);
-		restColor.Remove (_paperList [0]);
-		restColor.Remove (_paperList [1]);
-		restColor.Remove (_paperList [2]);
-
-		bottomPanel.GetComponent<PaperDropPanel> ().AddColorRangeTarget(restColor);   
-		bottomPanel.GetComponent<PaperDropPanel> ().isTrashPanel = true;
-
 		isAutoMode = false;
 
 		BonusPowerUpController.shared().OnSlidePowerUpTriggered += HandleOnSlidePowerUpTriggered;
 		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;;
 	}
+
+
+	void Start()
+	{
+		StartCoroutine( InitCreatePaper ());
+	}
+
+	public void SetPaperDropColor(List<SOColor> left, List<SOColor> top, List<SOColor> right, List<SOColor> bottom)
+	{
+		leftPanel.GetComponent<PaperDropPanel> ().AddColorTarget(left);
+		topPanel.GetComponent<PaperDropPanel> ().AddColorTarget(top);
+		rightPanel.GetComponent<PaperDropPanel> ().AddColorTarget(right);
+		bottomPanel.GetComponent<PaperDropPanel> ().AddColorTarget(bottom);   
+		bottomPanel.GetComponent<PaperDropPanel> ().isTrashPanel = true;
+	}
+
+
+
 
 	void HandleOnCenterPanelObjectMagnetized (GameObject sender, GameObject magnetObject)
 	{
@@ -73,10 +80,7 @@ public class PaperController : MonoBehaviour {
 		isAutoMode = true;
 	}
 
-	void Start()
-	{
-		StartCoroutine( InitCreatePaper ());
-	}
+
 
 	void CreatePaper()
 	{
@@ -140,7 +144,7 @@ public class PaperController : MonoBehaviour {
 		case GamePlayModeType.Say_The_Color : 
 			countedObject = paper.GetComponent<PaperContent>().paper.colorTint;
 			break;
-		case GamePlayModeType.Say_The_Text : 
+		case GamePlayModeType.Say_The_Word : 
 			countedObject = paper.GetComponent<PaperContent>().paper.colorText;
 			break;
 		}
@@ -235,7 +239,7 @@ public class PaperController : MonoBehaviour {
 		{
 			colorObject = paperObject.colorTint;
 		} 
-		else if ( PaperGameManager.shared().playMode == GamePlayModeType.Say_The_Text) 
+		else if ( PaperGameManager.shared().playMode == GamePlayModeType.Say_The_Word) 
 		{
 			colorObject = paperObject.colorText;
 		}

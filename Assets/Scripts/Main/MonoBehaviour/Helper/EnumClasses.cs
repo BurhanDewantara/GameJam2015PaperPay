@@ -2,7 +2,7 @@
 public enum GamePlayModeType
 {
 	Say_The_Color,
-	Say_The_Text,
+	Say_The_Word,
 }
 
 public enum CurrencyType
@@ -51,6 +51,7 @@ public enum LevelMultiplierType
 	Positive2,
 	Positive4,
 	Positive8,
+	InstantGem,
 	InstantBonus,
 }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Artoncode.Core;
@@ -12,6 +13,15 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	public List<SOUpgradableData> upgradeables;
 	public List<int> comboLimit;
 
+	public GameObject pauseButton;
+
+
+	public GameObject tutorialPrefab;
+
+	public GameObject gameOverPrefab;
+
+	private GameObject _tutorialGameObject;
+	private GameObject _gameOverGameObject;
 
 	private int _comboCounter = 0;
 	private int _maxComboCounter = 0;
@@ -29,14 +39,44 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		_collectedCannedFood [LevelMultiplierType.Positive2] = 0;
 		_collectedCannedFood [LevelMultiplierType.Positive4] = 0;
 		_collectedCannedFood [LevelMultiplierType.Positive8] = 0;
+		_collectedCannedFood [LevelMultiplierType.InstantGem] = 0;
 		_collectedCannedFood [LevelMultiplierType.InstantBonus] = 0;
-	
+
+		pauseButton.GetComponent<Button> ().onClick.AddListener (PauseGame);
 	}
+
+	void PauseGame()
+	{
+		if (_tutorialGameObject == null) {
+			_tutorialGameObject = Instantiate ( tutorialPrefab) as GameObject;
+			_tutorialGameObject.GetComponent<TutorialSwipeController>().SetTutorialColor(paperInGame.GetRange (0, 1),
+			                                                                            paperInGame.GetRange (1, 1),
+			                                                                            paperInGame.GetRange (2, 1),
+			                                                                            paperInGame.GetRange (3, paperInGame.Count - 3));
+			_tutorialGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared ().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
+			_tutorialGameObject.GetComponent<Button>().onClick.AddListener(ResumeGame);
+		}
+		TimerController.shared ().StopTime();
+	}
+
+	void ResumeGame()
+	{
+		Destroy (_tutorialGameObject);
+		TimerController.shared ().ResumeTime ();
+	}
+
+
 
 	void Start()
 	{
+		PaperController.shared ().SetPaperDropColor (paperInGame.GetRange (0, 1),
+		                                           paperInGame.GetRange (1, 1),
+		                                           paperInGame.GetRange (2, 1),
+		                                           paperInGame.GetRange (3, paperInGame.Count - 3));
+
 		SetGameTime (UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.PermanentTime));
 		InitPowerUpHandler ();
+		PauseGame ();
 	}
 
 	void SetGameTime(float time)
@@ -50,6 +90,10 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		BonusPowerUpController.shared().OnSwitchPlayModeTriggered += HandleOnSwitchPlayModeTriggered;
 		BonusPowerUpController.shared().OnBadCanPowerUpTriggered += HandleOnBadCanPowerUpTriggered;
 		BonusPowerUpController.shared().OnCanCanPowerUpTriggered += HandleOnCanCanPowerUpTriggered;
+		BonusPowerUpController.shared().OnTimeMinusTriggered += HandleOnTimeMinusTriggered;
+		BonusPowerUpController.shared().OnTimePlusTriggered += HandleOnTimePlusTriggered;
+		BonusPowerUpController.shared().OnInstantCoinTriggered += HandleOnInstantCoinTriggered;
+		BonusPowerUpController.shared().OnBonusGemTriggered += HandleOnBonusGemTriggered;
 		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;
 
 	}
@@ -58,6 +102,28 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	
 	
 	#region POWER UPS HANDLER
+	
+	void HandleOnBonusGemTriggered (GameObject sender, int amount)
+	{
+		_collectedCannedFood [LevelMultiplierType.InstantGem] += amount;
+	}
+	
+	void HandleOnInstantCoinTriggered (GameObject sender, int amount)
+	{
+		_collectedCannedFood [LevelMultiplierType.InstantBonus] += amount;
+	}
+	
+	void HandleOnTimePlusTriggered (GameObject sender, int amount)
+	{
+		TimerController.shared ().EditTime (amount);
+	}
+	
+	void HandleOnTimeMinusTriggered (GameObject sender, int amount)
+	{
+		TimerController.shared ().EditTime (-amount);
+	}
+
+
 	void HandleOnPowerUpEnded (GameObject sender, float timer)
 	{
 		currentActivePowerUp = BonusCannedFoodType.None;
@@ -76,12 +142,14 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	{
 		switch (playMode) {
 		case GamePlayModeType.Say_The_Color:
-			playMode = GamePlayModeType.Say_The_Text;
+			playMode = GamePlayModeType.Say_The_Word;
 			break;
-		case GamePlayModeType.Say_The_Text:
+		case GamePlayModeType.Say_The_Word:
 			playMode = GamePlayModeType.Say_The_Color;
 			break;
 		} 
+		PaperController.shared().GetComponentInChildren<BackgroundSwitcher> ().SwitchMode (playMode);
+		CannedFoodMachineController.shared ().GetComponentInChildren<BackgroundSwitcher> ().SwitchMode (playMode);
 	}
 
 	
