@@ -5,7 +5,7 @@ using System.Collections;
 [System.Serializable]
 public class CannedFoodItem {
 
-	public float canMultiplier;
+	public float canMultiplier ;
 	public Sprite canSprite;
 	public SOCannedFood canFood;
 
@@ -22,6 +22,8 @@ public class CannedFoodItem {
 
 		if (!isPowerUp) {
 			canMultiplier = (can as StandardCannedFood).multiplier;
+		} else {
+			canMultiplier = 1;
 		}
 		canSprite = can.canSprite;
 	}

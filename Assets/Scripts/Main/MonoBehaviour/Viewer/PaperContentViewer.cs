@@ -14,23 +14,28 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 	public event PaperContentViewerDelegate OnDropAtBottomPanel;
 
 	private Vector3 _imageOriginalPosition;
-	private Vector3 _deltaMovement;
+	private Vector2 _deltaMovement;
 
 	public bool IsAccessible;
 
 	public void OnBeginDrag (PointerEventData eventData)
 	{
+//		Debug.Log (eventData);
 		if (!IsAccessible)
 			return;
 
 		_imageOriginalPosition = this.GetComponent<RectTransform> ().position;
-		_deltaMovement = Vector3.zero;
+		_deltaMovement = Vector2.zero;
 	}
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
+		Debug.Log (eventData);
 		if (!IsAccessible)
 			return;
+
+		if(!eventData.delta.Equals(Vector2.zero))
+			_deltaMovement = eventData.delta;
 		
 		if (Mathf.Abs (_deltaMovement.x) > Mathf.Abs (_deltaMovement.y) && _deltaMovement.x > 0) {
 			if (OnDropAtRightPanel != null)
@@ -53,11 +58,12 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 
 	public void OnDrag (PointerEventData eventData)
 	{
+//		Debug.Log (eventData);
 		if (!IsAccessible)
 			return;
 
-		_deltaMovement += new Vector3 (eventData.delta.x, eventData.delta.y, 0); 
-		this.GetComponent<RectTransform> ().position = _imageOriginalPosition + _deltaMovement;
+		_deltaMovement += new Vector2 (eventData.delta.x, eventData.delta.y); 
+		this.GetComponent<RectTransform> ().position = _imageOriginalPosition + new Vector3(_deltaMovement.x,_deltaMovement.y);
 	}
 
 

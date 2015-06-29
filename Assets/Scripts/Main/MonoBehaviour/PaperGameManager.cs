@@ -10,7 +10,6 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	public GamePlayModeType playMode;
 	public List<SOColor> paperInGame;
-	public List<SOUpgradableData> upgradeables;
 	public List<int> comboLimit;
 
 	public GameObject pauseButton;
@@ -39,10 +38,20 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		_collectedCannedFood [LevelMultiplierType.Positive2] = 0;
 		_collectedCannedFood [LevelMultiplierType.Positive4] = 0;
 		_collectedCannedFood [LevelMultiplierType.Positive8] = 0;
-		_collectedCannedFood [LevelMultiplierType.InstantGem] = 0;
 		_collectedCannedFood [LevelMultiplierType.InstantBonus] = 0;
+		_collectedCannedFood [LevelMultiplierType.InstantGem] = 0;
 
 		pauseButton.GetComponent<Button> ().onClick.AddListener (PauseGame);
+		TimerController.shared ().OnTimesUp += HandleOnTimesUp;
+	}
+
+	void HandleOnTimesUp (GameObject sender)
+	{
+		if (_gameOverGameObject == null) {
+			_gameOverGameObject = Instantiate(gameOverPrefab) as GameObject;
+			_gameOverGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
+			_gameOverGameObject.GetComponent<GameOverController>().SetCannedFood(_collectedCannedFood);
+		}
 	}
 
 	void PauseGame()
@@ -95,7 +104,6 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		BonusPowerUpController.shared().OnInstantCoinTriggered += HandleOnInstantCoinTriggered;
 		BonusPowerUpController.shared().OnBonusGemTriggered += HandleOnBonusGemTriggered;
 		BonusPowerUpController.shared().OnPowerUpEnded += HandleOnPowerUpEnded;
-
 	}
 
 	
@@ -223,10 +231,6 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		CannedFoodMachineController.shared ().CreateCan (canMultiplier);
 
 		 
-
-
-
-
 		//POWER UP ------------------------------------------------------------------------------------------------------------------------
 
 		_comboCounter++;

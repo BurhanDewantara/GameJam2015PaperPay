@@ -49,8 +49,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			} 
 			else if (isChancesHit (bonusChances) || true) 
 			{ 
-//				int randresult = Random.Range(0,8);
-				int randresult = 7;
+				int randresult = Random.Range(0,8);
 				CanFood = GetBonusCannedFood((BonusCannedFoodType)randresult);
 			} 
 		}

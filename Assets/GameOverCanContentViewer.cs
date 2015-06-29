@@ -4,24 +4,58 @@ using System.Collections;
 
 public class GameOverCanContentViewer : MonoBehaviour {
 
+
+	public delegate void GameOverCanContentViewerDelegate (GameObject sender);
+	public event GameOverCanContentViewerDelegate OnAnimationDone;
+
 	public CannedFoodItem canItem;
 	public GameObject canImage;
 	public GameObject canQtyText;
 	public GameObject totalPriceText;
 
-	public void SetCan(CannedFoodItem item,int quantity)
+	private float _speed = 0.3f;
+
+	public void Awake()
+	{
+		canQtyText.SetActive (false);
+		canImage.SetActive (false);
+		totalPriceText.SetActive (false);
+	}
+
+	public void SetCan(CannedFoodItem item,int quantity,Currency prize)
 	{
 		canItem = item;
 
-		canImage.GetComponent<Image> ().sprite = canItem.canSprite;
-		canQtyText.GetComponent<Text> ().text = quantity.ToString();
+		StartCoroutine(SetCanImage());
+		StartCoroutine(SetQuantity(quantity));
+		StartCoroutine(SetPrize(prize));
 
-		Currency price = new Currency ((int)(quantity * canItem.canMultiplier), 0);
-		totalPriceText.GetComponent<CurrencyViewer> ().currencyType = CurrencyType.Coin;
-		totalPriceText.GetComponent<CurrencyViewer> ().currencyType = CurrencyType.Coin;
-		totalPriceText.GetComponent<CurrencyViewer>().SetCurrency(price);
 	}
 
+	private IEnumerator SetCanImage()
+	{
+		yield return new WaitForSeconds(_speed * 1);
+		canImage.SetActive (true);
+		canImage.GetComponent<Image> ().sprite = canItem.canSprite;
+	}
+
+	private IEnumerator SetQuantity(int quantity)
+	{
+		yield return new WaitForSeconds (_speed * 2);
+		canQtyText.SetActive (true);
+		canQtyText.GetComponent<Text> ().text = quantity.ToString();
+	}
+
+	private IEnumerator SetPrize(Currency prize)
+	{
+		yield return new WaitForSeconds (_speed * 3);
+		totalPriceText.SetActive (true);
+		totalPriceText.GetComponent<CurrencyViewer> ().currencyType = prize.SplitCurrency().Key;
+		totalPriceText.GetComponent<CurrencyViewer>().SetCurrency(prize);
+	
+		if (OnAnimationDone != null)
+			OnAnimationDone (this.gameObject);
+	}
 
 
 

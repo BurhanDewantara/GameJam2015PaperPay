@@ -7,9 +7,9 @@ using System.Collections.Generic;
 public class Currency
 {	
 	public const int MAX_CURRENCY = 99999;
-	public const int MIN_CURRENCY = 0;
+	public const int MIN_CURRENCY = -10000;
 	public const int MAX_GEM_CURRENCY = 9999;
-	public const int MIN_GEM_CURRENCY = 0;
+	public const int MIN_GEM_CURRENCY = -1000;
 	public int coin;
 	public int gem;
 
