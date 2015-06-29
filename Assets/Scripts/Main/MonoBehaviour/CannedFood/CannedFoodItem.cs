@@ -21,7 +21,6 @@ public class CannedFoodItem {
 		this.canFood = can;
 
 		if (!isPowerUp) {
-						//unused
 			canMultiplier = (can as StandardCannedFood).multiplier;
 		}
 		canSprite = can.canSprite;
