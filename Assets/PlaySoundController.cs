@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlaySoundController : MonoBehaviour {
 
 	public List<AudioClip> sounds;
