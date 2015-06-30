@@ -18,4 +18,8 @@ public class CannedFoodContent : MonoBehaviour {
 		canImage.GetComponent<Image> ().sprite = can.canSprite;
 	}
 
+	public void SetButtonEnable(bool val)
+	{
+		this.GetComponent<Button>().enabled = val;
+	}
 }

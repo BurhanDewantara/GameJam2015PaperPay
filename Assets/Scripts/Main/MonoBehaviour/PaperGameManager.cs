@@ -47,7 +47,17 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	void HandleOnTimesUp (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio("timesup");
+		CannedFoodMachineController.shared ().SetIsAccessible (false);
+		PaperController.shared ().SetIsAccessible (false);
+		StartCoroutine(ShowGameOver ());
+	}
+
+	IEnumerator ShowGameOver()
+	{
+		yield return new WaitForSeconds (1);
 		if (_gameOverGameObject == null) {
+
 			_gameOverGameObject = Instantiate(gameOverPrefab) as GameObject;
 			_gameOverGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
 			_gameOverGameObject.GetComponent<GameOverController>().SetCannedFood(_collectedCannedFood);
@@ -65,13 +75,16 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			_tutorialGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared ().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
 			_tutorialGameObject.GetComponent<Button>().onClick.AddListener(ResumeGame);
 		}
+
 		TimerController.shared ().StopTime();
+		AudioController.shared ().SetMainAudioSoundVolume(0.3f);
 	}
 
 	void ResumeGame()
 	{
 		Destroy (_tutorialGameObject);
 		TimerController.shared ().ResumeTime ();
+		AudioController.shared ().SetMainAudioSoundVolume(1.0f);
 	}
 
 

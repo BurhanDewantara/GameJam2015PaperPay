@@ -23,18 +23,6 @@ public class GameOverController : MonoBehaviour {
 
 	public void Awake()
 	{
-		
-//		_collectedCannedFood = new Dictionary<LevelMultiplierType, int> ();
-//		_collectedCannedFood [LevelMultiplierType.Negative1] = 0;
-//		_collectedCannedFood [LevelMultiplierType.Positive05] = 10;
-//		_collectedCannedFood [LevelMultiplierType.Positive1] = 20;
-//		_collectedCannedFood [LevelMultiplierType.Positive2] = 30;
-//		_collectedCannedFood [LevelMultiplierType.Positive4] = 10;
-//		_collectedCannedFood [LevelMultiplierType.Positive8] = 20;
-//		_collectedCannedFood [LevelMultiplierType.InstantBonus] = 30;
-//		_collectedCannedFood [LevelMultiplierType.InstantGem] = 30;
-//		SetCannedFood (_collectedCannedFood);
-
 
 		_gameoverItemList = new List<GameObject> ();
 		totalPanel.SetActive(false);
@@ -52,10 +40,15 @@ public class GameOverController : MonoBehaviour {
 	public void SetCannedFood(Dictionary<LevelMultiplierType, int> collectedCannedFood)
 	{
 		_collectedCannedFood = collectedCannedFood;
-
 		cannedKeys = new List<LevelMultiplierType> (_collectedCannedFood.Keys);
+	}
+
+	public void ShowScore()
+	{
 		CreateGameOverItemList (_idx++);
 	}
+
+
 
 	public void CreateGameOverItemList(int idx)
 	{

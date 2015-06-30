@@ -48,6 +48,9 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 
 	public void TriggerPowerUp (BonusCannedFoodType powerUp, int amount = 5, bool isDoubled = false)
 	{
+		string audioStr= "canbonus";
+
+
 		switch (powerUp) {
 		case BonusCannedFoodType.TimePlus:
 		{
@@ -85,6 +88,7 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 		}
 		case BonusCannedFoodType.BadCan:
 		{
+			audioStr= "canbad";
 			isAnyPowerUpActivated = true;
 			powerUpTimerTotal = 5;
 			powerUpTimerCounter = powerUpTimerTotal;
@@ -98,12 +102,14 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 		}
 		case BonusCannedFoodType.SwitchPlayMode:
 		{
+			audioStr= "canbad";
 			if(OnSwitchPlayModeTriggered!=null)
 				OnSwitchPlayModeTriggered(this.gameObject,amount);
 			break;
 		}
 		case BonusCannedFoodType.TimeMinus:
 		{
+			audioStr= "canbad";
 			if(OnTimeMinusTriggered!=null)
 				OnTimeMinusTriggered(this.gameObject,amount);
 			break;
@@ -122,6 +128,10 @@ public class BonusPowerUpController : SingletonMonoBehaviour<BonusPowerUpControl
 			break;
 		}
 		}
+
+
+		AudioController.shared ().PlayAudio (audioStr);
+
 	}
 
 

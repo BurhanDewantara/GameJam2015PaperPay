@@ -30,7 +30,6 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 
 	public void OnEndDrag (PointerEventData eventData)
 	{
-		Debug.Log (eventData);
 		if (!IsAccessible)
 			return;
 
