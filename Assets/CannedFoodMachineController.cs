@@ -44,7 +44,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
-	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 10,float bonusChances = 10)
+	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 0,float bonusChances = 0)
 	{ 
 		MoveAllCan ();
 		GameObject obj = CreateCanObject (canPrefab);
@@ -140,7 +140,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,false); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
-		AudioController.shared ().SetMainAudioSoundVolume(1.0f);
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 	}
 
 	void HandlePOPOnFreeButtonClicked (GameObject sender, BonusCannedFood bonusCan)
@@ -151,7 +151,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
-		AudioController.shared ().SetMainAudioSoundVolume(1.0f);
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 	}
 
 	void HandlePOPOnPayButtonClicked (GameObject sender, BonusCannedFood bonusCan)
@@ -161,7 +161,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
-		AudioController.shared ().SetMainAudioSoundVolume(1.0f);
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 
 	}
 	

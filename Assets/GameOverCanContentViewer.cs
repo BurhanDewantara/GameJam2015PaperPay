@@ -35,6 +35,7 @@ public class GameOverCanContentViewer : MonoBehaviour {
 	private IEnumerator SetCanImage()
 	{
 		yield return new WaitForSeconds(_speed * 1);
+		AudioController.shared ().PlayAudio ("scoring");
 		canImage.SetActive (true);
 		canImage.GetComponent<Image> ().sprite = canItem.canSprite;
 	}
@@ -42,6 +43,7 @@ public class GameOverCanContentViewer : MonoBehaviour {
 	private IEnumerator SetQuantity(int quantity)
 	{
 		yield return new WaitForSeconds (_speed * 2);
+		AudioController.shared ().PlayAudio ("scoring");
 		canQtyText.SetActive (true);
 		canQtyText.GetComponent<Text> ().text = quantity.ToString();
 	}
@@ -49,6 +51,7 @@ public class GameOverCanContentViewer : MonoBehaviour {
 	private IEnumerator SetPrize(Currency prize)
 	{
 		yield return new WaitForSeconds (_speed * 3);
+		AudioController.shared ().PlayAudio ("scoring");
 		totalPriceText.SetActive (true);
 		totalPriceText.GetComponent<CurrencyViewer> ().currencyType = prize.SplitCurrency().Key;
 		totalPriceText.GetComponent<CurrencyViewer>().SetCurrency(prize);

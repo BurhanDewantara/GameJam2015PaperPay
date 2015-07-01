@@ -64,9 +64,17 @@ public class GameOverController : MonoBehaviour {
 			}
 
 			Currency prize = new Currency((int)(quantity * foodItem.canMultiplier),0);
-			if(cannedKeys [idx] == LevelMultiplierType.InstantGem)
-			{
+
+			switch (cannedKeys [idx]) {
+			case LevelMultiplierType.InstantGem : 
 				prize = new Currency(0,(int)(quantity * foodItem.canMultiplier));
+				break;
+			case LevelMultiplierType.Negative1 : 
+				prize -= prize * UpgradableDataController.shared().GetPlayerUpgradeDataValue(UpgradableType.ReduceMistakePaperCost);
+				break;
+			default:
+				prize += prize * UpgradableDataController.shared().GetPlayerUpgradeDataValue(UpgradableType.CanMultiplier);
+				break;
 			}
 
 			_totalPrize += prize;

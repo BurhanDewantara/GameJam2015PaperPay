@@ -37,7 +37,7 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 	{
 		_paperList = PaperGameManager.shared ().paperInGame;
 
-		float power = 100;/* #### value from upgradeable*/
+		float power = UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.PaperSlideSpeed);
 		leftPanel.GetComponent<Magnet> ().magnetPower = power;
 		topPanel.GetComponent<Magnet> ().magnetPower = power;
 		rightPanel.GetComponent<Magnet> ().magnetPower = power;
