@@ -43,11 +43,28 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 		pauseButton.GetComponent<Button> ().onClick.AddListener (PauseGame);
 		TimerController.shared ().OnTimesUp += HandleOnTimesUp;
+
+
+		comboLimit = new List<int> ();
+		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 1);
+		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 2);
+		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 3);
+		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 4);
 	}
 
 	void HandleOnTimesUp (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio("timesup");
+		CannedFoodMachineController.shared ().SetIsAccessible (false);
+		PaperController.shared ().SetIsAccessible (false);
+		StartCoroutine(ShowGameOver ());
+	}
+
+	IEnumerator ShowGameOver()
+	{
+		yield return new WaitForSeconds (1);
 		if (_gameOverGameObject == null) {
+
 			_gameOverGameObject = Instantiate(gameOverPrefab) as GameObject;
 			_gameOverGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
 			_gameOverGameObject.GetComponent<GameOverController>().SetCannedFood(_collectedCannedFood);
@@ -65,13 +82,16 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			_tutorialGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared ().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
 			_tutorialGameObject.GetComponent<Button>().onClick.AddListener(ResumeGame);
 		}
+
 		TimerController.shared ().StopTime();
+		AudioController.shared ().SetMainAudioSoundVolume(0.3f);
 	}
 
 	void ResumeGame()
 	{
 		Destroy (_tutorialGameObject);
 		TimerController.shared ().ResumeTime ();
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 	}
 
 
@@ -173,6 +193,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		yield return new WaitForSeconds (0.2f);
 		if (currentActivePowerUp == BonusCannedFoodType.CanCan) {
 			_collectedCannedFood [canMultiplier]++;
+   			
 			CannedFoodMachineController.shared ().CreateCan (canMultiplier);
 		} 
 	}
@@ -228,7 +249,10 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		StartCoroutine (CheckCanCan (canMultiplier));
 
 		_collectedCannedFood [canMultiplier]++;
-		CannedFoodMachineController.shared ().CreateCan (canMultiplier);
+
+		float bonusCanChances = UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ChancesBonusCan);
+		float bonusGemchances = UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ChancesBonusCan);
+		CannedFoodMachineController.shared ().CreateCan (canMultiplier,bonusGemchances,bonusCanChances);
 
 		 
 		//POWER UP ------------------------------------------------------------------------------------------------------------------------

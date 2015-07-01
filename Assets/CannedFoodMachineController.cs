@@ -20,6 +20,17 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 	private List<GameObject> _cannedFoodObject;
 
+
+	public void SetIsAccessible(bool val =false)
+	{
+		
+		foreach (GameObject item in _cannedFoodObject) {
+			item.GetComponent<CannedFoodContent>().SetButtonEnable(val);
+		
+		}
+	}
+
+
 	void Start()
 	{
 		_cannedFoodObject = new List<GameObject> ();
@@ -33,7 +44,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
-	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 10,float bonusChances = 10)
+	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 0,float bonusChances = 0)
 	{ 
 		MoveAllCan ();
 		GameObject obj = CreateCanObject (canPrefab);
@@ -47,7 +58,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 			{
 				CanFood = GetInstantCannedFood(BonusCannedFoodType.BonusGem);
 			} 
-			else if (isChancesHit (bonusChances) || true) 
+			else if (isChancesHit (bonusChances)) 
 			{ 
 				int randresult = Random.Range(0,8);
 				CanFood = GetBonusCannedFood((BonusCannedFoodType)randresult);
@@ -91,6 +102,7 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		} 
 		else if (can is InstantCannedFood)
 		{
+			AudioController.shared ().PlayAudio ("bonusgem");
 			BonusCannedFoodType bonustype = (can as InstantCannedFood).bonusType;
 			switch (bonustype) 
 			{
@@ -109,6 +121,8 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 	void CreatePowerUpPopUp(BonusCannedFood bonusCan)
 	{
 		if (_powerUpPopUpObject == null) {
+			AudioController.shared ().SetMainAudioSoundVolume(0.3f);
+			AudioController.shared ().PlayAudio ("popupbonus");
 			_powerUpPopUpObject = Instantiate(powerUpPopUpPrefab) as GameObject;
 
 			_powerUpPopUpObject.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
@@ -122,36 +136,35 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 	void HandlePOPOnAcceptButtonClicked (GameObject sender, BonusCannedFood bonusCan)
 	{
+		AudioController.shared ().PlayAudio ("button");
 		BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,false); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 	}
 
 	void HandlePOPOnFreeButtonClicked (GameObject sender, BonusCannedFood bonusCan)
 	{
-
+		AudioController.shared ().PlayAudio ("button");
 		//SHOW IKLAN!
 		if(bonusCan.categoryType == BonusCategoryType.Positive)
 			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
 	}
 
 	void HandlePOPOnPayButtonClicked (GameObject sender, BonusCannedFood bonusCan)
 	{
+		AudioController.shared ().PlayAudio ("pay");
 		if(bonusCan.categoryType == BonusCategoryType.Positive)
 			BonusPowerUpController.shared().TriggerPowerUp(bonusCan.bonusType,bonusCan.bonusAmount,true); 
 		Destroy (sender);
 		TimerController.shared ().ResumeTime ();
+		AudioController.shared ().SetMainAudioSoundVolume(0.8f);
+
 	}
-
-
-
-
-
-
-
-
+	
 
 	void HandleOnCanDestroyed (GameObject sender)
 	{

@@ -23,12 +23,21 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	private bool isAutoMode;
 
+
+	
+	public void SetIsAccessible(bool val =false)
+	{
+		foreach (GameObject paper in paperContainerPanel.GetComponent<PaperContainer> ().Papers) {
+			paper.GetComponent<PaperContentViewer>().IsAccessible = val;
+			
+		}
+	}
+
 	void Awake()
 	{
 		_paperList = PaperGameManager.shared ().paperInGame;
 
-		float power = 100
-			;/* #### value from upgradeable*/
+		float power = UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.PaperSlideSpeed);
 		leftPanel.GetComponent<Magnet> ().magnetPower = power;
 		topPanel.GetComponent<Magnet> ().magnetPower = power;
 		rightPanel.GetComponent<Magnet> ().magnetPower = power;
@@ -170,6 +179,7 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtTopPanel (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio ("slide1");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet(sender);
@@ -181,6 +191,7 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtRightPanel (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio ("slide2");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;
 		if (isAutoMode) {
 			AutoMagnet (sender);
@@ -191,6 +202,7 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtLeftPanel (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio ("slide2");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet (sender);
@@ -201,6 +213,7 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtBottomPanel (GameObject sender)
 	{
+		AudioController.shared ().PlayAudio ("slide3");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet (sender);
