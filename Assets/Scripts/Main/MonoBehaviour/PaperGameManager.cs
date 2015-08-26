@@ -14,10 +14,10 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	public GameObject pauseButton;
 
-
 	public GameObject tutorialPrefab;
-
 	public GameObject gameOverPrefab;
+	public GameObject comboPrefab;
+
 
 	private GameObject _tutorialGameObject;
 	private GameObject _gameOverGameObject;
@@ -26,7 +26,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 	private int _maxComboCounter = 0;
 	private Dictionary<LevelMultiplierType, int> _collectedCannedFood = new Dictionary<LevelMultiplierType, int> ();
 	private BonusCannedFoodType currentActivePowerUp; 
-
+	private int comboIdx = 0;
 
 	void Awake ()
 	{
@@ -46,10 +46,10 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 
 		comboLimit = new List<int> ();
-		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 1);
-		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 2);
-		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 3);
-		comboLimit.Add ((int)UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 4);
+		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 1));
+		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 2));
+		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 3));
+		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 4));
 	}
 
 	void HandleOnTimesUp (GameObject sender)
@@ -228,16 +228,31 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	public void DoCorrect ()
 	{
-		int i = comboLimit.Count - 1;
+		int i = 0;
 		for (i = 0; i < comboLimit.Count-1; i++) {
 			if (_comboCounter < comboLimit [i])
 				break;
 		}
 
-
 		int idx = Mathf.Clamp (i, 0, comboLimit.Count - 1);
 		LevelMultiplierType canMultiplier = (LevelMultiplierType)LevelMultiplierType.Positive1 + idx;
 
+
+		if (idx != comboIdx) {
+			comboIdx = idx;
+			string txt = "";
+			switch (canMultiplier)
+			{
+				case LevelMultiplierType.Positive2 : txt = "x2";break;
+				case LevelMultiplierType.Positive4 : txt = "x4";break;
+				case LevelMultiplierType.Positive8 : txt = "x8";break;
+			}
+			if(txt!="")
+			{
+				CreatePopUp(txt);
+			}
+
+		}
 
 
 		//POWER UP ------------------------------------------------------------------------------------------------------------------------
@@ -270,6 +285,14 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		CannedFoodMachineController.shared ().CreateCan (LevelMultiplierType.Negative1);
 	}
 
+
+	public void CreatePopUp(string Text)
+	{
+		GameObject obj = Instantiate (comboPrefab) as GameObject;
+		obj.GetComponent<Text> ().text = Text;
+		obj.GetComponent<RectTransform> ().SetParent (PaperController.shared ().GetComponent<RectTransform> ().parent.GetComponent<RectTransform> (),false);
+		obj.GetComponent<RectTransform> ().localPosition += new Vector3 (Random.Range (-300, 300), Random.Range (-300, 300), 0);
+	}
 
 
 }

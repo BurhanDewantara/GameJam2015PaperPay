@@ -63,6 +63,7 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 
 		_deltaMovement += new Vector2 (eventData.delta.x, eventData.delta.y); 
 		this.GetComponent<RectTransform> ().position = _imageOriginalPosition + new Vector3(_deltaMovement.x,_deltaMovement.y);
+
 	}
 
 

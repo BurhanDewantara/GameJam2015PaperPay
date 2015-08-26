@@ -73,6 +73,7 @@ public class LevelController : SingletonMonoBehaviour<LevelController>
 
 	public void LoadLevel (string aLevelName)
 	{
+
 		LoadLevel (aLevelName, 1, 1, Color.black);
 	}
 		
