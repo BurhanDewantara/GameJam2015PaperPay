@@ -41,6 +41,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		_collectedCannedFood [LevelMultiplierType.InstantBonus] = 0;
 		_collectedCannedFood [LevelMultiplierType.InstantGem] = 0;
 
+		pauseButton.GetComponent<Button> ().onClick.RemoveAllListeners();
 		pauseButton.GetComponent<Button> ().onClick.AddListener (PauseGame);
 		TimerController.shared ().OnTimesUp += HandleOnTimesUp;
 
@@ -50,6 +51,10 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 2));
 		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 3));
 		comboLimit.Add ((int)(UpgradableDataController.shared ().GetPlayerUpgradeDataValue (UpgradableType.ComboShorter) * 4));
+
+
+
+
 	}
 
 	void HandleOnTimesUp (GameObject sender)
@@ -79,6 +84,8 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			                                                                            paperInGame.GetRange (1, 1),
 			                                                                            paperInGame.GetRange (2, 1),
 			                                                                            paperInGame.GetRange (3, paperInGame.Count - 3));
+
+
 			_tutorialGameObject.GetComponent<RectTransform>().SetParent(PaperController.shared ().GetComponent<RectTransform>().parent.GetComponent<RectTransform>(),false);
 			_tutorialGameObject.GetComponent<Button>().onClick.AddListener(ResumeGame);
 		}
@@ -98,6 +105,8 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	void Start()
 	{
+		paperInGame.Shuffle(5);
+
 		PaperController.shared ().SetPaperDropColor (paperInGame.GetRange (0, 1),
 		                                           paperInGame.GetRange (1, 1),
 		                                           paperInGame.GetRange (2, 1),

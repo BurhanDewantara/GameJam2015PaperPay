@@ -33,8 +33,8 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 		if (!IsAccessible)
 			return;
 
-		if(!eventData.delta.Equals(Vector2.zero))
-			_deltaMovement = eventData.delta;
+//		if(!eventData.delta.Equals(Vector2.zero))
+//			_deltaMovement = eventData.delta;
 		
 		if (Mathf.Abs (_deltaMovement.x) > Mathf.Abs (_deltaMovement.y) && _deltaMovement.x > 0) {
 			if (OnDropAtRightPanel != null)
@@ -61,7 +61,7 @@ public class PaperContentViewer : MonoBehaviour,IBeginDragHandler,IDragHandler,I
 		if (!IsAccessible)
 			return;
 
-		_deltaMovement += new Vector2 (eventData.delta.x, eventData.delta.y); 
+		_deltaMovement += new Vector2 (eventData.delta.x, eventData.delta.y) * 2; 
 		this.GetComponent<RectTransform> ().position = _imageOriginalPosition + new Vector3(_deltaMovement.x,_deltaMovement.y);
 
 	}

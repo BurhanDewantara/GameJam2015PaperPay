@@ -45,7 +45,7 @@ public class TutorialSwipeInfoController : MonoBehaviour {
 		string txt = "";
 
 		if (isTrashDirection) {
-			txt = GameHelper.SetColorInText(Color.grey,"Others");
+			txt = GameHelper.SetColorInText(Color.black,"Others");
 		} 
 		else {
 			foreach (SOColor socolor in socolors) {
@@ -55,7 +55,7 @@ public class TutorialSwipeInfoController : MonoBehaviour {
 			}
 		}
 
-		txt += " Slide to " + direction.ToString ();
+//		txt += " Slide to " + direction.ToString ();
 		titleText.GetComponent<Text>().text = txt;
 	}
 
