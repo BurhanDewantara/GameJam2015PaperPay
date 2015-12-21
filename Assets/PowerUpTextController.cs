@@ -140,7 +140,7 @@ public class PowerUpTextController : MonoBehaviour {
 		case BonusCannedFoodType.BadCan : text= "Defect can produced for " ; break;
 		case BonusCannedFoodType.TapToSlide : text= "Concentrate Power up in " ; break;
 		}
-		PUText.text = text + timer.ToString("0.000") + " s";
+		PUText.text = text + timer.ToString("0.00") + " s";
 		this.GetComponent<CanvasGroup>().alpha = 1;
 	}
 

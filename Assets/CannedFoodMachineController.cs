@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Artoncode.Core;
 
 public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMachineController> {
@@ -44,6 +44,8 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 	}
 
+
+
 	public void CreateCan(LevelMultiplierType levelMultiplierType,float gemChances = 0,float bonusChances = 0)
 	{ 
 		MoveAllCan ();
@@ -53,16 +55,34 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 
 		SOCannedFood CanFood = GetCannedFoodData (levelMultiplierType);
 
-		if (isBonusCannedFoodIsEligibleToProduce () && levelMultiplierType >= LevelMultiplierType.Positive1) {
-			if (isChancesHit (gemChances)) 
+		if(isBonusCannedFoodIsEligibleToProduce ())
+		{
+			if (levelMultiplierType >= LevelMultiplierType.Positive1) 
 			{
-				CanFood = GetInstantCannedFood(BonusCannedFoodType.BonusGem);
-			} 
-			else if (isChancesHit (bonusChances)) 
-			{ 
-				int randresult = Random.Range(0,8);
-				CanFood = GetBonusCannedFood((BonusCannedFoodType)randresult);
-			} 
+				//dapet gem
+				if (isChancesHit (gemChances)) 
+				{
+					CanFood = GetInstantCannedFood(BonusCannedFoodType.BonusGem);
+				} 
+				// dapet normal powerup (with bad chances)
+				else if (isChancesHit (bonusChances)) 
+				{ 
+					int randresult = Random.Range(0,8);
+					CanFood = GetBonusCannedFood((BonusCannedFoodType)randresult);
+				} 
+			}
+			else{
+				//badcan
+				if(isChancesHit(50))
+				{
+					CanFood = GetAnyNegativeOnlyCannedFood();
+				}else if(isChancesHit(20))
+				{
+					CanFood = GetAnyPositiveOnlyCannedFood();
+				}
+
+			}
+
 		}
 		obj.GetComponent<CannedFoodContent> ().SetItem (new CannedFoodItem (CanFood));
 		_cannedFoodObject.Add (obj);
@@ -190,6 +210,16 @@ public class CannedFoodMachineController : SingletonMonoBehaviour<CannedFoodMach
 		}
 		return null;
 		
+	}
+
+
+	private BonusCannedFood GetAnyNegativeOnlyCannedFood()
+	{
+		return CannedFoodBonus.Where(x=> x.categoryType == BonusCategoryType.Negative).Random();
+	}
+	private BonusCannedFood GetAnyPositiveOnlyCannedFood()
+	{
+		return CannedFoodBonus.Where(x=> x.categoryType == BonusCategoryType.Positive).Random();
 	}
 	
 	private BonusCannedFood GetBonusCannedFood(BonusCannedFoodType bonusType)

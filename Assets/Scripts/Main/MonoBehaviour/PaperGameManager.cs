@@ -246,6 +246,8 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 		int idx = Mathf.Clamp (i, 0, comboLimit.Count - 1);
 		LevelMultiplierType canMultiplier = (LevelMultiplierType)LevelMultiplierType.Positive1 + idx;
 
+		AudioController.shared ().PlayAudio ("correct");
+
 
 		if (idx != comboIdx) {
 			comboIdx = idx;
@@ -258,7 +260,9 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 			}
 			if(txt!="")
 			{
+				AudioController.shared ().PlayAudio ("cangem");
 				CreatePopUp(txt);
+
 			}
 
 		}
@@ -289,6 +293,7 @@ public class PaperGameManager : SingletonMonoBehaviour< PaperGameManager >
 
 	public void DoMistake ()
 	{
+		AudioController.shared ().PlayAudio ("incorrect");
 		_comboCounter = 0;
 		_collectedCannedFood [(LevelMultiplierType)LevelMultiplierType.Negative1]++;
 		CannedFoodMachineController.shared ().CreateCan (LevelMultiplierType.Negative1);

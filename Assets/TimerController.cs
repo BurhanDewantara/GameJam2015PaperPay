@@ -57,7 +57,7 @@ public class TimerController : SingletonMonoBehaviour<TimerController> {
 	public void EditTime(float time)
 	{
 		//change the max value instead of current value
-		timeSlider.maxValue -= time;
+		timeSlider.maxValue += time;
 	}
 
 

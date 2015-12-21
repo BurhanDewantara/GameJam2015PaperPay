@@ -179,7 +179,6 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtTopPanel (GameObject sender)
 	{
-		AudioController.shared ().PlayAudio ("slide1");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet(sender);
@@ -191,7 +190,6 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtRightPanel (GameObject sender)
 	{
-		AudioController.shared ().PlayAudio ("slide2");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;
 		if (isAutoMode) {
 			AutoMagnet (sender);
@@ -202,7 +200,6 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtLeftPanel (GameObject sender)
 	{
-		AudioController.shared ().PlayAudio ("slide2");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet (sender);
@@ -213,7 +210,6 @@ public class PaperController : SingletonMonoBehaviour<PaperController> {
 
 	void HandleOnDropAtBottomPanel (GameObject sender)
 	{
-		AudioController.shared ().PlayAudio ("slide3");
 		sender.GetComponent<PaperContentViewer> ().IsAccessible = false;	
 		if (isAutoMode) {
 			AutoMagnet (sender);
