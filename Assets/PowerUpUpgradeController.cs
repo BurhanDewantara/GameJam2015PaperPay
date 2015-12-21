@@ -35,6 +35,7 @@ public class PowerUpUpgradeController : MonoBehaviour {
 
 	public void Upgrade()
 	{
+		AudioController.shared().PlayAudio("kaching");
 		CurrencyManager.shared ().PayMoney (_price);
 		PlayerUpgradableDataManager.shared ().Upgrade (upgradeData.UpgradeType);
 		if (OnUpgradeButtonPressed != null)

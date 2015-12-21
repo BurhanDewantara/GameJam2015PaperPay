@@ -17,6 +17,8 @@ public class LevelController : SingletonMonoBehaviour<LevelController>
 	private void Awake ()
 	{
 		m_Material = new Material ("Shader \"Plane/No zTest\" { SubShader { Pass { Blend SrcAlpha OneMinusSrcAlpha ZWrite Off Cull Off Fog { Mode Off } BindChannels { Bind \"Color\",color } } } }");
+		StartCoroutine (FadeIn ());
+
 	}
 		
 	private void DrawQuad (Color aColor, float aAlpha)
@@ -35,6 +37,28 @@ public class LevelController : SingletonMonoBehaviour<LevelController>
 		GL.PopMatrix ();
 	}
 		
+	IEnumerator FadeIn () {
+		float t = 1f;
+		while (t > 0.0f) {
+			yield return new WaitForEndOfFrame ();
+			t = changeTowards (t, 0, 1/0.3f, Time.deltaTime);
+			DrawQuad (Color.black, t);
+		}
+	}
+
+	public float changeTowards (float current, float target, float acceleration, float timeStep) {
+		if (current == target) {
+			return current;	
+		} else {
+			float dir = Mathf.Sign (target - current); // must n be increased or decreased to get closer to target
+			current += acceleration * timeStep * dir;
+			return (dir == Mathf.Sign (target - current)) ? current : target; // if n has now passed target then return target, otherwise return n
+		}
+	}
+
+
+
+
 	private IEnumerator Fade (float aFadeOutTime, float aFadeInTime, Color aColor)
 	{
 		float t = 0.0f;
@@ -73,6 +97,7 @@ public class LevelController : SingletonMonoBehaviour<LevelController>
 
 	public void LoadLevel (string aLevelName)
 	{
+
 		LoadLevel (aLevelName, 1, 1, Color.black);
 	}
 		
